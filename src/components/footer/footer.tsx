@@ -1,15 +1,13 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 
-export class footer extends Component {
-
-
-    render() {
-        return (
-            <div>
-                
-            </div>
-        )
-    }
+export class Footer extends Component {
+  render() {
+    return (
+      <div>
+        <p className="mt-5 text-center">Copyright © Vincent</p>
+      </div>
+    );
+  }
 }
 
-export default footer
+export default Footer;
