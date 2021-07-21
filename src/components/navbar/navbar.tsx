@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import './NavBar.css';
 
 export class NavBar extends Component {
   render() {
@@ -28,8 +29,8 @@ export class NavBar extends Component {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/blogs">
-                  Blog
+                <Link className="nav-link" to="/products">
+                  Product Management
                 </Link>
               </li>
               <li className="nav-item">

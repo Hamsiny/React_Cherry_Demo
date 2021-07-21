@@ -1,10 +1,9 @@
-import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { NavBar } from "./components/NavBar/NavBar";
 import { Footer } from "./components/Footer/Footer";
 import Home from "./pages/Home/Home";
+import ProductManagement from "./pages/ProductManagement/ProductManagement";
 
 function App() {
   return (
@@ -13,6 +12,9 @@ function App() {
       <Switch>
         <Route path= '/' exact>
           <Home />
+        </Route>
+        <Route path= '/products' exact>
+          <ProductManagement />
         </Route>
       </Switch>
       <Footer />
