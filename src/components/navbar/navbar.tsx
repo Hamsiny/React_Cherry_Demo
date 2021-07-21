@@ -6,7 +6,7 @@ export class NavBar extends Component {
   render() {
     return (
       <div>
-        <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
+        <nav className="navbar navbar-expand-sm navbar-dark bgred">
           <Link className="navbar-brand" to="/">
             React Cherry Demo
           </Link>
