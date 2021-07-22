@@ -47,3 +47,10 @@ export class NavBar extends Component {
 }
 
 export default NavBar;
+
+// async componentDidMount() {
+//     const getPromise = axios.get("http://206.189.39.185:5031/api/Product");
+//     const result = (await getPromise).data.data;
+//     this.setState({products: result});
+//     console.log(this.state.products);
+//   }
