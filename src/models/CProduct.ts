@@ -5,7 +5,7 @@ export default interface CProduct {
   productName: string;
   productCode: string;
   imageUrl: string;
-  desciption: string;
+  description: string;
   price: number;
   priceRrp: number;
   priceShopify: number;

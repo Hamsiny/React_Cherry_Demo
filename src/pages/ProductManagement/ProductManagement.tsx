@@ -3,6 +3,7 @@ import axios from "axios";
 import Product from "../../models/Product";
 import CProduct from "../../models/CProduct";
 import ProductsTable from "../../components/ProductsTable/ProductsTable";
+import TestMaterialUI from "../../components/TestMaterialUI/TestMaterialUI";
 
 // export class ProductManagement extends Component {
 //   state = {
@@ -40,6 +41,7 @@ const ProductManagement = () => {
   return (
     <>
       <ProductsTable />
+      {/* <TestMaterialUI /> */}
     </>
   );
 };
