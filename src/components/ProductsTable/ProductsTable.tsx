@@ -97,7 +97,8 @@ const ProductsTable = () => {
   return (
     <div>
       <div className="mt-5">
-        <TableContainer component={Paper}>
+        <h3>Product List</h3>
+        <TableContainer component={Paper} className="mt-5">
           <Table className={classes.table} aria-label="customized table">
             <TableHead>
               <TableRow>

@@ -4,6 +4,7 @@ import { NavBar } from "./components/NavBar/NavBar";
 import { Footer } from "./components/Footer/Footer";
 import Home from "./pages/Home/Home";
 import ProductManagement from "./pages/ProductManagement/ProductManagement";
+import { Products } from "./components/Products/Products";
 
 function App() {
   return (
@@ -15,6 +16,9 @@ function App() {
         </Route>
         <Route path= '/products' exact>
           <ProductManagement />
+        </Route>
+        <Route path= '/addproducts' exact>
+          <Products />
         </Route>
       </Switch>
       <Footer />

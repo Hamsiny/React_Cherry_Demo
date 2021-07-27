@@ -34,6 +34,11 @@ export class NavBar extends Component {
                 </Link>
               </li>
               <li className="nav-item">
+                <Link className="nav-link" to="/addproducts">
+                  Add
+                </Link>
+              </li>
+              <li className="nav-item">
                 <Link className="nav-link" to="/form">
                   Form
                 </Link>

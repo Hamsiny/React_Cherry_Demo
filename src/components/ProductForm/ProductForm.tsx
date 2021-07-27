@@ -3,8 +3,6 @@ import React, { useState } from "react";
 import CProduct from "../../models/CProduct";
 import { Form, UseForm } from "../UseForm";
 
-
-
 const initialValues: CProduct = {
   productId: 0,
   productName: "",
@@ -29,7 +27,6 @@ const initialValues: CProduct = {
 };
 
 export const ProductForm = () => {
-
   const { values, setValues, handleInputChange } = UseForm(initialValues);
 
   return (
@@ -37,7 +34,7 @@ export const ProductForm = () => {
       <h2>Product Form</h2>
       <Form>
         <Grid container>
-          <Grid item xs={6}>
+          <Grid item xs={4}>
             <TextField
               variant="outlined"
               label="Product Name"
@@ -53,7 +50,81 @@ export const ProductForm = () => {
               onChange={handleInputChange}
             />
           </Grid>
-          <Grid item></Grid>
+          <Grid item xs={4}>
+            <TextField
+              variant="outlined"
+              label="Price"
+              name="price"
+              placeholder=""
+              value={values.price}
+              onChange={handleInputChange}
+            />
+            <TextField
+              variant="outlined"
+              label="Recommended Retail Price"
+              name="priceRrp"
+              value={values.priceRrp}
+              onChange={handleInputChange}
+            />
+            <TextField
+              variant="outlined"
+              label="Shopify Price"
+              name="priceShopify"
+              value={values.priceShopify}
+              onChange={handleInputChange}
+            />
+            <TextField
+              variant="outlined"
+              label="Agent Price"
+              name="priceAgent"
+              value={values.priceAgent}
+              onChange={handleInputChange}
+            />
+            <TextField
+              variant="outlined"
+              label="Price of 12.12"
+              name="price1212"
+              value={values.price1212}
+              onChange={handleInputChange}
+            />
+            <TextField
+              variant="outlined"
+              label="Special Price"
+              name="priceSpecial"
+              value={values.priceSpecial}
+              onChange={handleInputChange}
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <TextField
+              variant="outlined"
+              label="Height(cm)"
+              name="height"
+              value={values.height}
+              onChange={handleInputChange}
+            />
+            <TextField
+              variant="outlined"
+              label="Width(cm)"
+              name="width"
+              value={values.width}
+              onChange={handleInputChange}
+            />
+            <TextField
+              variant="outlined"
+              label="Length(cm)"
+              name="length"
+              value={values.length}
+              onChange={handleInputChange}
+            />
+            <TextField
+              variant="outlined"
+              label="Weight(kg)"
+              name="weight"
+              value={values.weight}
+              onChange={handleInputChange}
+            />
+          </Grid>
         </Grid>
       </Form>
     </div>

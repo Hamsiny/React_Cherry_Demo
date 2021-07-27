@@ -42,7 +42,6 @@ import { Products } from "../../components/Products/Products";
 const ProductManagement = () => {
   return (
     <>
-      <Products />
       <ProductsTable />
       {/* <TestMaterialUI /> */}
     </>
