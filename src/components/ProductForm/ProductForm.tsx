@@ -1,15 +1,9 @@
 import { Grid, makeStyles, TextField } from "@material-ui/core";
 import React, { useState } from "react";
 import CProduct from "../../models/CProduct";
+import { Form, UseForm } from "../UseForm";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    "& .MuiFormControl-root": {
-      width: "80%",
-      margin: theme.spacing(1),
-    },
-  },
-}));
+
 
 const initialValues: CProduct = {
   productId: 0,
@@ -35,18 +29,13 @@ const initialValues: CProduct = {
 };
 
 export const ProductForm = () => {
-  const [values, setValues] = useState(initialValues);
-  const classes = useStyles();
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setValues({ ...values, [name]: value });
-  };
+  const { values, setValues, handleInputChange } = UseForm(initialValues);
 
   return (
     <div className="mt-5">
       <h2>Product Form</h2>
-      <form className={classes.root}>
+      <Form>
         <Grid container>
           <Grid item xs={6}>
             <TextField
@@ -66,7 +55,7 @@ export const ProductForm = () => {
           </Grid>
           <Grid item></Grid>
         </Grid>
-      </form>
+      </Form>
     </div>
   );
 };
