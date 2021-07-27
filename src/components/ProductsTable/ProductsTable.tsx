@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Product from "../../models/Product";
 import CProduct from "../../models/CProduct";
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  withStyles,
+  Theme,
+  createStyles,
+  makeStyles,
+} from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -10,12 +14,35 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import { orange } from "@material-ui/core/colors";
 
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
 });
+
+const StyledTableCell = withStyles((theme: Theme) =>
+  createStyles({
+    head: {
+      backgroundColor: "#DF5E5E",
+      color: theme.palette.common.white,
+    },
+    body: {
+      fontSize: 14,
+    },
+  })
+)(TableCell);
+
+const StyledTableRow = withStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      "&:nth-of-type(odd)": {
+        backgroundColor: theme.palette.action.hover,
+      },
+    },
+  })
+)(TableRow);
 
 // function createData(
 //   name: string,
@@ -53,47 +80,49 @@ const ProductsTable = () => {
     getProduct();
   }, []);
 
-  const rows = product.map(pro => {
+  const rows = product.map((pro) => {
     return {
       productId: pro.productId,
       productName: pro.productName,
-      description: pro.description,
+      desciption: pro.desciption,
       price: pro.price,
       height: pro.height,
       width: pro.width,
       length: pro.length,
       weight: pro.weight,
-      packageQty: pro.packageQty
-    }
-  })
+      packageQty: pro.packageQty,
+    };
+  });
 
   return (
     <div>
       <div className="mt-5">
         <TableContainer component={Paper}>
-          <Table className={classes.table} aria-label="simple table">
+          <Table className={classes.table} aria-label="customized table">
             <TableHead>
               <TableRow>
-                <TableCell>Product Name</TableCell>
-                <TableCell align="right">Description</TableCell>
-                <TableCell align="right">Price&nbsp;($)</TableCell>
-                <TableCell align="right">Weight&nbsp;(g)</TableCell>
-                <TableCell align="right">Size (H * W * L)</TableCell>
-                <TableCell align="right">Quantity</TableCell>
+                <StyledTableCell>Product Name</StyledTableCell>
+                <StyledTableCell align="right">Description</StyledTableCell>
+                <StyledTableCell align="right">Price&nbsp;($)</StyledTableCell>
+                <StyledTableCell align="right">Weight&nbsp;(g)</StyledTableCell>
+                <StyledTableCell align="right">Size (H * W * L)</StyledTableCell>
+                <StyledTableCell align="right">Quantity</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {rows.map((row) => (
-                <TableRow key={row.productId}>
-                  <TableCell component="th" scope="row">
+                <StyledTableRow key={row.productId}>
+                  <StyledTableCell component="th" scope="row">
                     {row.productName}
-                  </TableCell>
-                  <TableCell align="right">{row.description}</TableCell>
-                  <TableCell align="right">{row.price}</TableCell>
-                  <TableCell align="right">{row.weight}</TableCell>
-                  <TableCell align="right">{row.height} * {row.width} * {row.length}</TableCell>
-                  <TableCell align="right">{row.packageQty}</TableCell>
-                </TableRow>
+                  </StyledTableCell>
+                  <StyledTableCell align="right">{row.desciption}</StyledTableCell>
+                  <StyledTableCell align="right">{row.price}</StyledTableCell>
+                  <StyledTableCell align="right">{row.weight}</StyledTableCell>
+                  <StyledTableCell align="right">
+                    {row.height} * {row.width} * {row.length}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">{row.packageQty}</StyledTableCell>
+                </StyledTableRow>
               ))}
             </TableBody>
           </Table>

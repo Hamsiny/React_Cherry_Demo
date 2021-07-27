@@ -2,7 +2,7 @@ export default interface Product {
     productName: string;
     productCode: string;
     imageUrl: string;
-    description: string;
+    desciption: string;
     price: number;
     priceRrp: number;
     priceShopify: number;

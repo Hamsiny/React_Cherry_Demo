@@ -4,6 +4,8 @@ import Product from "../../models/Product";
 import CProduct from "../../models/CProduct";
 import ProductsTable from "../../components/ProductsTable/ProductsTable";
 import TestMaterialUI from "../../components/TestMaterialUI/TestMaterialUI";
+import { ProductForm } from "../../components/ProductForm/ProductForm";
+import { Products } from "../../components/Products/Products";
 
 // export class ProductManagement extends Component {
 //   state = {
@@ -40,6 +42,7 @@ import TestMaterialUI from "../../components/TestMaterialUI/TestMaterialUI";
 const ProductManagement = () => {
   return (
     <>
+      <Products />
       <ProductsTable />
       {/* <TestMaterialUI /> */}
     </>
