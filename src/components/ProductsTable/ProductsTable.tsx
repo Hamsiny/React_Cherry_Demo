@@ -14,13 +14,27 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import { orange } from "@material-ui/core/colors";
+import { UseTable } from "../UseTable";
+import { TablePagination } from "@material-ui/core";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 650,
+    marginTop: theme.spacing(3),
+    "& thead th": {
+      fontWeight: "600",
+      // color: theme.palette.primary.main,
+      // backgroundColor: theme.palette.primary.light,
+    },
+    "& tbody td": {
+      fontWeight: "300",
+    },
+    "& tbody tr:hover": {
+      backgroundColor: "#FFF3F1",
+      cursor: "pointer",
+    },
   },
-});
+}));
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -63,8 +77,12 @@ const StyledTableRow = withStyles((theme: Theme) =>
 // ];
 
 const ProductsTable = () => {
-  const [product, setProduct] = useState<CProduct[]>([]);
+  const [products, setProducts] = useState<CProduct[]>([]);
   const classes = useStyles();
+
+  const pages = [5, 10, 25];
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(pages[page]);
 
   const fetchData = async () => {
     const data = await axios.get("http://206.189.39.185:5031/api/Product");
@@ -73,14 +91,27 @@ const ProductsTable = () => {
   };
 
   useEffect(() => {
-    const getProduct = async () => {
+    const getProducts = async () => {
       const dataFromServer = await fetchData();
-      setProduct(dataFromServer);
+      setProducts(dataFromServer);
     };
-    getProduct();
+    getProducts();
   }, []);
 
-  const rows = product.map((pro) => {
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = event => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  }
+
+  const productsAfterPagingAndSoring = () => {
+    return products.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
+  }
+
+  const rows = productsAfterPagingAndSoring().map((pro) => {
     return {
       productId: pro.productId,
       productName: pro.productName,
@@ -98,7 +129,7 @@ const ProductsTable = () => {
     <div>
       <div className="mt-5">
         <h3>Product List</h3>
-        <TableContainer component={Paper} className="mt-5">
+        <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="customized table">
             <TableHead>
               <TableRow>
@@ -106,7 +137,9 @@ const ProductsTable = () => {
                 <StyledTableCell align="right">Description</StyledTableCell>
                 <StyledTableCell align="right">Price&nbsp;($)</StyledTableCell>
                 <StyledTableCell align="right">Weight&nbsp;(g)</StyledTableCell>
-                <StyledTableCell align="right">Size (H * W * L)</StyledTableCell>
+                <StyledTableCell align="right">
+                  Size (H * W * L)
+                </StyledTableCell>
                 <StyledTableCell align="right">Quantity</StyledTableCell>
               </TableRow>
             </TableHead>
@@ -116,17 +149,30 @@ const ProductsTable = () => {
                   <StyledTableCell component="th" scope="row">
                     {row.productName}
                   </StyledTableCell>
-                  <StyledTableCell align="right">{row.desciption}</StyledTableCell>
+                  <StyledTableCell align="right">
+                    {row.desciption}
+                  </StyledTableCell>
                   <StyledTableCell align="right">{row.price}</StyledTableCell>
                   <StyledTableCell align="right">{row.weight}</StyledTableCell>
                   <StyledTableCell align="right">
                     {row.height} * {row.width} * {row.length}
                   </StyledTableCell>
-                  <StyledTableCell align="right">{row.packageQty}</StyledTableCell>
+                  <StyledTableCell align="right">
+                    {row.packageQty}
+                  </StyledTableCell>
                 </StyledTableRow>
               ))}
             </TableBody>
           </Table>
+          <TablePagination
+            component="div"
+            page={page}
+            rowsPerPageOptions={pages}
+            rowsPerPage={rowsPerPage}
+            count={products.length}
+            onPageChange={handleChangePage} 
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
         </TableContainer>
       </div>
     </div>
