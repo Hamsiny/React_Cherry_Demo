@@ -14,7 +14,6 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import { UseTable } from "../UseTable";
 import { TablePagination } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -58,31 +57,15 @@ const StyledTableRow = withStyles((theme: Theme) =>
   })
 )(TableRow);
 
-// function createData(
-//   name: string,
-//   calories: number,
-//   fat: number,
-//   carbs: number,
-//   protein: number
-// ) {
-//   return { name, calories, fat, carbs, protein };
-// }
-
-// const rows = [
-//   createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-//   createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-//   createData("Eclair", 262, 16.0, 24, 6.0),
-//   createData("Cupcake", 305, 3.7, 67, 4.3),
-//   createData("Gingerbread", 356, 16.0, 49, 3.9),
-// ];
-
 const ProductsTable = () => {
   const [products, setProducts] = useState<CProduct[]>([]);
-  const classes = useStyles();
-
   const pages = [5, 10, 25];
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(pages[page]);
+  const [order, setOrder] = useState();
+  const [orderBy, setOrderBy] = useState();
+
+  const classes = useStyles();
 
   const fetchData = async () => {
     const data = await axios.get("http://206.189.39.185:5031/api/Product");
@@ -102,14 +85,14 @@ const ProductsTable = () => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = event => {
+  const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
-  }
+  };
 
   const productsAfterPagingAndSoring = () => {
     return products.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
-  }
+  };
 
   const rows = productsAfterPagingAndSoring().map((pro) => {
     return {
@@ -125,6 +108,15 @@ const ProductsTable = () => {
     };
   });
 
+  const labels = [
+    { id: "productName", label: "Product Name", align: true },
+    { id: "description", label: "Description", align: false },
+    { id: "price", label: "Price ($)", align: false },
+    { id: "weight", label: "Weight (g)", align: false },
+    { id: "size", label: "Size (H * W * L)", align: false },
+    { id: "packageQty", label: "Quantity", align: false },
+  ];
+
   return (
     <div>
       <div className="mt-5">
@@ -133,14 +125,14 @@ const ProductsTable = () => {
           <Table className={classes.table} aria-label="customized table">
             <TableHead>
               <TableRow>
-                <StyledTableCell>Product Name</StyledTableCell>
-                <StyledTableCell align="right">Description</StyledTableCell>
-                <StyledTableCell align="right">Price&nbsp;($)</StyledTableCell>
-                <StyledTableCell align="right">Weight&nbsp;(g)</StyledTableCell>
-                <StyledTableCell align="right">
-                  Size (H * W * L)
-                </StyledTableCell>
-                <StyledTableCell align="right">Quantity</StyledTableCell>
+                {labels.map((label) => (
+                  <StyledTableCell
+                    align={label.align ? "left" : "right"}
+                    key={label.id}
+                  >
+                    {label.label}
+                  </StyledTableCell>
+                ))}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -170,7 +162,7 @@ const ProductsTable = () => {
             rowsPerPageOptions={pages}
             rowsPerPage={rowsPerPage}
             count={products.length}
-            onPageChange={handleChangePage} 
+            onPageChange={handleChangePage}
             onChangeRowsPerPage={handleChangeRowsPerPage}
           />
         </TableContainer>
