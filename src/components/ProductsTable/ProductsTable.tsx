@@ -14,7 +14,8 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import { TablePagination } from "@material-ui/core";
+import { TablePagination, TableSortLabel } from "@material-ui/core";
+import { AirlineSeatLegroomReducedRounded } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -62,8 +63,8 @@ const ProductsTable = () => {
   const pages = [5, 10, 25];
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(pages[page]);
-  const [order, setOrder] = useState();
-  const [orderBy, setOrderBy] = useState();
+  const [order, setOrder] = useState<any>();
+  const [orderBy, setOrderBy] = useState<any>();
 
   const classes = useStyles();
 
@@ -90,8 +91,43 @@ const ProductsTable = () => {
     setPage(0);
   };
 
+  function stableSort(array, comparator) {
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+      const order = comparator(a[0], b[0]);
+      if (order !== 0) return order;
+      return a[1] - b[1];
+    });
+    return stabilizedThis.map((el) => el[0]);
+  }
+
+  function getComparator(order, orderBy) {
+    return order === "desc"
+      ? (a, b) => descendingComparator(a, b, orderBy)
+      : (a, b) => -descendingComparator(a, b, orderBy);
+  }
+
+  function descendingComparator(a, b, orderBy) {
+    if (b[orderBy] < a[orderBy]) {
+      return -1;
+    }
+    if (b[orderBy] > a[orderBy]) {
+      return 1;
+    }
+    return 0;
+  }
+
   const productsAfterPagingAndSoring = () => {
-    return products.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
+    return stableSort(products, getComparator(order, orderBy)).slice(
+      page * rowsPerPage,
+      (page + 1) * rowsPerPage
+    );
+  };
+
+  const handleSortRequest = (cellId) => {
+    const isAsc = orderBy === cellId && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(cellId);
   };
 
   const rows = productsAfterPagingAndSoring().map((pro) => {
@@ -110,7 +146,12 @@ const ProductsTable = () => {
 
   const labels = [
     { id: "productName", label: "Product Name", align: true },
-    { id: "description", label: "Description", align: false },
+    {
+      id: "description",
+      label: "Description",
+      align: false,
+      disableSorting: true,
+    },
     { id: "price", label: "Price ($)", align: false },
     { id: "weight", label: "Weight (g)", align: false },
     { id: "size", label: "Size (H * W * L)", align: false },
@@ -129,8 +170,21 @@ const ProductsTable = () => {
                   <StyledTableCell
                     align={label.align ? "left" : "right"}
                     key={label.id}
+                    sortDirection={orderBy === label.id ? order : false}
                   >
-                    {label.label}
+                    {label.disableSorting ? (
+                      label.label
+                    ) : (
+                      <TableSortLabel
+                        active={orderBy === label.id}
+                        direction={orderBy === label.id ? order : "asc"}
+                        onClick={() => {
+                          handleSortRequest(label.id);
+                        }}
+                      >
+                        {label.label}
+                      </TableSortLabel>
+                    )}
                   </StyledTableCell>
                 ))}
               </TableRow>
