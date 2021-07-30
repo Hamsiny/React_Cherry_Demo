@@ -14,8 +14,14 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import { TablePagination, TableSortLabel } from "@material-ui/core";
-import { AirlineSeatLegroomReducedRounded } from "@material-ui/icons";
+import {
+  InputAdornment,
+  TablePagination,
+  TableSortLabel,
+  Toolbar,
+} from "@material-ui/core";
+import { Input } from "../Controls/Input";
+import { Search } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -33,6 +39,17 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#FFF3F1",
       cursor: "pointer",
     },
+  },
+  pageContent: {
+    margin: theme.spacing(5),
+    padding: theme.spacing(3),
+  },
+  searchInput: {
+    width: "30%",
+  },
+  newButton: {
+    position: "absolute",
+    right: "10px",
   },
 }));
 
@@ -65,6 +82,11 @@ const ProductsTable = () => {
   const [rowsPerPage, setRowsPerPage] = useState(pages[page]);
   const [order, setOrder] = useState<any>();
   const [orderBy, setOrderBy] = useState<any>();
+  const [filterFn, setFilterFn] = useState({
+    fn: (items) => {
+      return items;
+    },
+  });
 
   const classes = useStyles();
 
@@ -118,16 +140,29 @@ const ProductsTable = () => {
   }
 
   const productsAfterPagingAndSoring = () => {
-    return stableSort(products, getComparator(order, orderBy)).slice(
-      page * rowsPerPage,
-      (page + 1) * rowsPerPage
-    );
+    return stableSort(
+      filterFn.fn(products),
+      getComparator(order, orderBy)
+    ).slice(page * rowsPerPage, (page + 1) * rowsPerPage);
   };
 
   const handleSortRequest = (cellId) => {
     const isAsc = orderBy === cellId && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(cellId);
+  };
+
+  const handleSearch = (e) => {
+    let target = e.target;
+    setFilterFn({
+      fn: (items) => {
+        if (target.value == "") return items;
+        else
+          return items.filter((x) =>
+            x.productName.toLowerCase().includes(target.value)
+          );
+      },
+    });
   };
 
   const rows = productsAfterPagingAndSoring().map((pro) => {
@@ -156,13 +191,28 @@ const ProductsTable = () => {
     { id: "weight", label: "Weight (g)", align: false },
     { id: "size", label: "Size (H * W * L)", align: false },
     { id: "packageQty", label: "Quantity", align: false },
+    { id: "action", label: "Action", align: false, disableSorting: true },
   ];
 
   return (
     <div>
       <div className="mt-5">
         <h3>Product List</h3>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} className="mt-5">
+          <Toolbar>
+            <Input
+              label="Search Employees"
+              className={classes.searchInput}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Search />
+                  </InputAdornment>
+                ),
+              }}
+              onChange={handleSearch}
+            />
+          </Toolbar>
           <Table className={classes.table} aria-label="customized table">
             <TableHead>
               <TableRow>
@@ -205,6 +255,8 @@ const ProductsTable = () => {
                   </StyledTableCell>
                   <StyledTableCell align="right">
                     {row.packageQty}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
                   </StyledTableCell>
                 </StyledTableRow>
               ))}
