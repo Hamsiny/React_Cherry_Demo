@@ -30,6 +30,7 @@ import Product from "../../models/Product";
 import ActionButton from "../Controls/ActionButton";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import CloseIcon from "@material-ui/icons/Close";
+import Notification from "../Notification/Notification";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -97,6 +98,11 @@ const ProductsTable = () => {
   });
   const [openPopup, setOpenPopup] = useState(false);
   const [productForEdit, setProductForEdit] = useState(null);
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
 
   const classes = useStyles();
 
@@ -318,8 +324,13 @@ const ProductsTable = () => {
           openPopup={openPopup}
           setOpenPopup={setOpenPopup}
         >
-          <ProductForm setOpenPopup={setOpenPopup} productForEdit={productForEdit}  />
+          <ProductForm
+            setOpenPopup={setOpenPopup}
+            productForEdit={productForEdit}
+            setNotify={setNotify}
+          />
         </Popup>
+        <Notification notify={notify} setNotify={setNotify} />
       </div>
     </div>
   );

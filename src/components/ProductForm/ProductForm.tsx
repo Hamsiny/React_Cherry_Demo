@@ -33,7 +33,7 @@ const initialValues = {
 // const initialValues = {} as CProduct;
 
 export const ProductForm = (props) => {
-  const { setOpenPopup, productForEdit } = props;
+  const { setOpenPopup, productForEdit, setNotify } = props;
   const validate = (fieldValues = values) => {
     let temp = {
       ...errors,
@@ -144,9 +144,13 @@ export const ProductForm = (props) => {
           dataToPost
         );
       }
-
       resetForm();
       setOpenPopup(false);
+      setNotify({
+        isOpen: true,
+        message: "Submitted Successfully",
+        type: "success"
+      })
     }
   };
 
