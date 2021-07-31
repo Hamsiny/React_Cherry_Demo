@@ -31,6 +31,7 @@ import ActionButton from "../Controls/ActionButton";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import CloseIcon from "@material-ui/icons/Close";
 import Notification from "../Notification/Notification";
+import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -84,6 +85,21 @@ const StyledTableRow = withStyles((theme: Theme) =>
   })
 )(TableRow);
 
+const labels = [
+  { id: "productName", label: "Product Name", align: true },
+  {
+    id: "description",
+    label: "Description",
+    align: false,
+    disableSorting: true,
+  },
+  { id: "price", label: "Price ($)", align: false },
+  { id: "weight", label: "Weight (g)", align: false },
+  { id: "size", label: "Size (H * W * L)", align: false },
+  { id: "packageQty", label: "Quantity", align: false },
+  { id: "actions", label: "Actions", align: false, disableSorting: true },
+];
+
 const ProductsTable = () => {
   const [products, setProducts] = useState<CProduct[]>([]);
   const pages = [10, 20, 30];
@@ -102,6 +118,12 @@ const ProductsTable = () => {
     isOpen: false,
     message: "",
     type: "",
+  });
+  const [confirmDialog, setConfirmDialog] = useState({
+    isOpen: false,
+    title: "",
+    subTitle: "",
+    onConfirm: () => {},
   });
 
   const classes = useStyles();
@@ -186,6 +208,16 @@ const ProductsTable = () => {
     setOpenPopup(true);
   };
 
+  const onDelete = (id) => {
+    setConfirmDialog({ ...confirmDialog, isOpen: false });
+    axios.delete(`http://206.189.39.185:5031/api/Product/${id}`);
+    setNotify({
+      isOpen: true,
+      message: "Deleted Successfully",
+      type: "error",
+    });
+  };
+
   // const rows = productsAfterPagingAndSoring().map((pro) => {
   //   return {
   //     productId: pro.productId,
@@ -200,24 +232,9 @@ const ProductsTable = () => {
   //   };
   // });
 
-  const labels = [
-    { id: "productName", label: "Product Name", align: true },
-    {
-      id: "description",
-      label: "Description",
-      align: false,
-      disableSorting: true,
-    },
-    { id: "price", label: "Price ($)", align: false },
-    { id: "weight", label: "Weight (g)", align: false },
-    { id: "size", label: "Size (H * W * L)", align: false },
-    { id: "packageQty", label: "Quantity", align: false },
-    { id: "actions", label: "Actions", align: false, disableSorting: true },
-  ];
-
   return (
     <div>
-      <div className="mt-5">
+      <div className="mt-5 mx-3">
         <h3>Product List</h3>
         <TableContainer component={Paper} className="mt-5">
           <Toolbar>
@@ -301,7 +318,17 @@ const ProductsTable = () => {
                     >
                       <EditOutlinedIcon fontSize="small" />
                     </ActionButton>
-                    <ActionButton color="default">
+                    <ActionButton
+                      color="default"
+                      onClick={() => {
+                        setConfirmDialog({
+                          isOpen: true,
+                          title: "Delete this Product?",
+                          subTitle: "You can't undo this operation.",
+                          onConfirm: () => onDelete(product.productId),
+                        });
+                      }}
+                    >
                       <CloseIcon fontSize="small" />
                     </ActionButton>
                   </StyledTableCell>
@@ -331,6 +358,10 @@ const ProductsTable = () => {
           />
         </Popup>
         <Notification notify={notify} setNotify={setNotify} />
+        <ConfirmDialog
+          confirmDialog={confirmDialog}
+          setConfirmDialog={setConfirmDialog}
+        />
       </div>
     </div>
   );

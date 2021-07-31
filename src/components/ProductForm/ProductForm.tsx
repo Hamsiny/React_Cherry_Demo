@@ -113,7 +113,7 @@ export const ProductForm = (props) => {
     console.log(values);
     if (validate()) {
       // addOrEdit(values, resetForm);
-      const dataToPost = {
+      const dataToUse = {
         productId: values.productId,
         productName: values.productName,
         productCode: values.productCode,
@@ -131,17 +131,17 @@ export const ProductForm = (props) => {
         weight: parseInt(values.weight),
         packageQty: parseInt(values.packageQty),
       };
-      if (dataToPost.productId == "") {
-        console.log(dataToPost);
+      if (dataToUse.productId == "") {
+        console.log(dataToUse);
         axios.post(
           "http://206.189.39.185:5031/api/Product/ProductCreate",
-          dataToPost
+          dataToUse
         );
       } else {
-        console.log(dataToPost);
+        console.log(dataToUse);
         axios.put(
           "http://206.189.39.185:5031/api/Product/ProductUpdate",
-          dataToPost
+          dataToUse
         );
       }
       resetForm();
