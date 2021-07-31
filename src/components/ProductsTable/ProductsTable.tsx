@@ -22,6 +22,14 @@ import {
 } from "@material-ui/core";
 import { Input } from "../Controls/Input";
 import { Search } from "@material-ui/icons";
+import AddIcon from "@material-ui/icons/Add";
+import { Button } from "../Controls/Button";
+import Popup from "../Popup/Popup";
+import { ProductForm } from "../ProductForm/ProductForm";
+import Product from "../../models/Product";
+import ActionButton from "../Controls/ActionButton";
+import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
+import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -77,7 +85,7 @@ const StyledTableRow = withStyles((theme: Theme) =>
 
 const ProductsTable = () => {
   const [products, setProducts] = useState<CProduct[]>([]);
-  const pages = [5, 10, 25];
+  const pages = [10, 20, 30];
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(pages[page]);
   const [order, setOrder] = useState<any>();
@@ -87,6 +95,8 @@ const ProductsTable = () => {
       return items;
     },
   });
+  const [openPopup, setOpenPopup] = useState(false);
+  const [productForEdit, setProductForEdit] = useState(null);
 
   const classes = useStyles();
 
@@ -165,19 +175,24 @@ const ProductsTable = () => {
     });
   };
 
-  const rows = productsAfterPagingAndSoring().map((pro) => {
-    return {
-      productId: pro.productId,
-      productName: pro.productName,
-      desciption: pro.desciption,
-      price: pro.price,
-      height: pro.height,
-      width: pro.width,
-      length: pro.length,
-      weight: pro.weight,
-      packageQty: pro.packageQty,
-    };
-  });
+  const openInPopup = (product) => {
+    setProductForEdit(product);
+    setOpenPopup(true);
+  };
+
+  // const rows = productsAfterPagingAndSoring().map((pro) => {
+  //   return {
+  //     productId: pro.productId,
+  //     productName: pro.productName,
+  //     desciption: pro.desciption,
+  //     price: pro.price,
+  //     height: pro.height,
+  //     width: pro.width,
+  //     length: pro.length,
+  //     weight: pro.weight,
+  //     packageQty: pro.packageQty,
+  //   };
+  // });
 
   const labels = [
     { id: "productName", label: "Product Name", align: true },
@@ -191,7 +206,7 @@ const ProductsTable = () => {
     { id: "weight", label: "Weight (g)", align: false },
     { id: "size", label: "Size (H * W * L)", align: false },
     { id: "packageQty", label: "Quantity", align: false },
-    { id: "action", label: "Action", align: false, disableSorting: true },
+    { id: "actions", label: "Actions", align: false, disableSorting: true },
   ];
 
   return (
@@ -211,6 +226,17 @@ const ProductsTable = () => {
                 ),
               }}
               onChange={handleSearch}
+            />
+            <Button
+              text="Add New"
+              variant="outlined"
+              color="secondary"
+              startIcon={<AddIcon />}
+              className={classes.newButton}
+              onClick={() => {
+                setOpenPopup(true);
+                setProductForEdit(null);
+              }}
             />
           </Toolbar>
           <Table className={classes.table} aria-label="customized table">
@@ -240,23 +266,38 @@ const ProductsTable = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => (
-                <StyledTableRow key={row.productId}>
+              {productsAfterPagingAndSoring().map((product) => (
+                <StyledTableRow key={product.productId}>
                   <StyledTableCell component="th" scope="row">
-                    {row.productName}
+                    {product.productName}
                   </StyledTableCell>
                   <StyledTableCell align="right">
-                    {row.desciption}
-                  </StyledTableCell>
-                  <StyledTableCell align="right">{row.price}</StyledTableCell>
-                  <StyledTableCell align="right">{row.weight}</StyledTableCell>
-                  <StyledTableCell align="right">
-                    {row.height} * {row.width} * {row.length}
+                    {product.desciption}
                   </StyledTableCell>
                   <StyledTableCell align="right">
-                    {row.packageQty}
+                    {product.price}
                   </StyledTableCell>
                   <StyledTableCell align="right">
+                    {product.weight}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    {product.height} * {product.width} * {product.length}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    {product.packageQty}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    <ActionButton
+                      color="default"
+                      onClick={() => {
+                        openInPopup(product);
+                      }}
+                    >
+                      <EditOutlinedIcon fontSize="small" />
+                    </ActionButton>
+                    <ActionButton color="default">
+                      <CloseIcon fontSize="small" />
+                    </ActionButton>
                   </StyledTableCell>
                 </StyledTableRow>
               ))}
@@ -269,9 +310,16 @@ const ProductsTable = () => {
             rowsPerPage={rowsPerPage}
             count={products.length}
             onPageChange={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </TableContainer>
+        <Popup
+          title="Add a Product"
+          openPopup={openPopup}
+          setOpenPopup={setOpenPopup}
+        >
+          <ProductForm setOpenPopup={setOpenPopup} productForEdit={productForEdit}  />
+        </Popup>
       </div>
     </div>
   );

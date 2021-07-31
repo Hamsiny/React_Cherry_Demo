@@ -1,6 +1,6 @@
 import { Grid, makeStyles, TextField } from "@material-ui/core";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CProduct from "../../models/CProduct";
 import Product from "../../models/Product";
 import { Button } from "../Controls/Button";
@@ -32,7 +32,8 @@ const initialValues = {
 
 // const initialValues = {} as CProduct;
 
-export const ProductForm = () => {
+export const ProductForm = (props) => {
+  const { setOpenPopup, productForEdit } = props;
   const validate = (fieldValues = values) => {
     let temp = {
       ...errors,
@@ -42,6 +43,12 @@ export const ProductForm = () => {
       temp["productName"] = fieldValues.productName
         ? ""
         : "This field is required.";
+    if ("productCode" in fieldValues)
+      temp["productCode"] = fieldValues.productCode
+        ? ""
+        : "This field is required.";
+    if ("imageUrl" in fieldValues)
+      temp["imageUrl"] = fieldValues.imageUrl ? "" : "This field is required.";
     if ("desciption" in fieldValues)
       temp["desciption"] = fieldValues.desciption
         ? ""
@@ -105,7 +112,9 @@ export const ProductForm = () => {
     e.preventDefault();
     console.log(values);
     if (validate()) {
-      const dataToPost: Product = {
+      // addOrEdit(values, resetForm);
+      const dataToPost = {
+        productId: values.productId,
         productName: values.productName,
         productCode: values.productCode,
         imageUrl: values.imageUrl,
@@ -122,31 +131,62 @@ export const ProductForm = () => {
         weight: parseInt(values.weight),
         packageQty: parseInt(values.packageQty),
       };
-      axios.post(
-        "http://206.189.39.185:5031/api/Product/ProductCreate",
-        dataToPost
-      );
+      if (dataToPost.productId == "") {
+        console.log(dataToPost);
+        axios.post(
+          "http://206.189.39.185:5031/api/Product/ProductCreate",
+          dataToPost
+        );
+      } else {
+        console.log(dataToPost);
+        axios.put(
+          "http://206.189.39.185:5031/api/Product/ProductUpdate",
+          dataToPost
+        );
+      }
+
       resetForm();
+      setOpenPopup(false);
     }
   };
 
+  useEffect(() => {
+    if (productForEdit != null) {
+      setValues({ ...productForEdit });
+    }
+  }, [productForEdit]);
+
   return (
-    <div className="mt-5">
-      <h2>Product Form</h2>
+    <div className="mt-2">
+      {/* <h2>Product Form</h2> */}
       <Form onSubmit={handleSubmit}>
         <Grid container>
           <Grid item xs={4}>
             <Input
               label="Product Name"
               name="productName"
-              value={values.productName}
+              value={values.productName || ""}
               onChange={handleInputChange}
               error={errors["productName"]}
             />
             <Input
+              label="Product Code"
+              name="productCode"
+              value={values.productCode || ""}
+              onChange={handleInputChange}
+              error={errors["productCode"]}
+            />
+            <Input
+              label="Image Url"
+              name="imageUrl"
+              value={values.imageUrl || ""}
+              onChange={handleInputChange}
+              error={errors["imageUrl"]}
+            />
+            <Input
               label="Description"
               name="desciption"
-              value={values.desciption}
+              value={values.desciption || ""}
               onChange={handleInputChange}
               error={errors["desciption"]}
             />
@@ -155,42 +195,42 @@ export const ProductForm = () => {
             <Input
               label="Price"
               name="price"
-              value={values.price}
+              value={values.price || ""}
               onChange={handleInputChange}
               error={errors["price"]}
             />
             <Input
               label="Recommended Retail Price"
               name="priceRrp"
-              value={values.priceRrp}
+              value={values.priceRrp || ""}
               onChange={handleInputChange}
               error={errors["priceRrp"]}
             />
             <Input
               label="Shopify Price"
               name="priceShopify"
-              value={values.priceShopify}
+              value={values.priceShopify || ""}
               onChange={handleInputChange}
               error={errors["priceShopify"]}
             />
             <Input
               label="Agent Price"
               name="priceAgent"
-              value={values.priceAgent}
+              value={values.priceAgent || ""}
               onChange={handleInputChange}
               error={errors["priceAgent"]}
             />
             <Input
               label="Price of 12.12"
               name="price1212"
-              value={values.price1212}
+              value={values.price1212 || ""}
               onChange={handleInputChange}
               error={errors["price1212"]}
             />
             <Input
               label="Special Price"
               name="priceSpecial"
-              value={values.priceSpecial}
+              value={values.priceSpecial || ""}
               onChange={handleInputChange}
               error={errors["priceSpecial"]}
             />
@@ -199,35 +239,35 @@ export const ProductForm = () => {
             <Input
               label="Height(cm)"
               name="height"
-              value={values.height}
+              value={values.height || ""}
               onChange={handleInputChange}
               error={errors["height"]}
             />
             <Input
               label="Width(cm)"
               name="width"
-              value={values.width}
+              value={values.width || ""}
               onChange={handleInputChange}
               error={errors["width"]}
             />
             <Input
               label="Length(cm)"
               name="length"
-              value={values.length}
+              value={values.length || ""}
               onChange={handleInputChange}
               error={errors["length"]}
             />
             <Input
               label="Weight(kg)"
               name="weight"
-              value={values.weight}
+              value={values.weight || ""}
               onChange={handleInputChange}
               error={errors["weight"]}
             />
             <Input
               label="Quantity"
               name="packageQty"
-              value={values.packageQty}
+              value={values.packageQty || ""}
               onChange={handleInputChange}
               error={errors["packageQty"]}
             />
