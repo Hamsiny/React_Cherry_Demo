@@ -15,6 +15,9 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import {
+  Box,
+  Collapse,
+  IconButton,
   InputAdornment,
   TablePagination,
   TableSortLabel,
@@ -32,6 +35,8 @@ import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import CloseIcon from "@material-ui/icons/Close";
 import Notification from "../Notification/Notification";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -60,6 +65,11 @@ const useStyles = makeStyles((theme) => ({
   newButton: {
     position: "absolute",
     right: "10px",
+  },
+  root: {
+    "& > *": {
+      borderBottom: "unset",
+    },
   },
 }));
 
@@ -100,6 +110,88 @@ const labels = [
   { id: "actions", label: "Actions", align: false, disableSorting: true },
 ];
 
+function Row(props) {
+  const { product, openInPopup, setNotify } = props;
+  const [open, setOpen] = useState(false);
+  const [confirmDialog, setConfirmDialog] = useState({
+    isOpen: false,
+    title: "",
+    subTitle: "",
+    onConfirm: () => {},
+  });
+  const classes = useStyles();
+
+  const onDelete = (id) => {
+    setConfirmDialog({ ...confirmDialog, isOpen: false });
+    axios.delete(`http://206.189.39.185:5031/api/Product/${id}`);
+    setNotify({
+      isOpen: true,
+      message: "Deleted Successfully",
+      type: "error",
+    });
+  };
+
+  return (
+    <React.Fragment>
+      <StyledTableRow key={product.productId}>
+        <StyledTableCell>
+          <IconButton
+            aria-label="expand row"
+            size="small"
+            onClick={() => setOpen(!open)}
+          >
+            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          </IconButton>
+        </StyledTableCell>
+        <StyledTableCell component="th" scope="row">
+          {product.productName}
+        </StyledTableCell>
+        <StyledTableCell align="right">{product.desciption}</StyledTableCell>
+        <StyledTableCell align="right">{product.price}</StyledTableCell>
+        <StyledTableCell align="right">{product.weight}</StyledTableCell>
+        <StyledTableCell align="right">
+          {product.height} * {product.width} * {product.length}
+        </StyledTableCell>
+        <StyledTableCell align="right">{product.packageQty}</StyledTableCell>
+        <StyledTableCell align="right">
+          <ActionButton
+            color="default"
+            onClick={() => {
+              openInPopup(product);
+            }}
+          >
+            <EditOutlinedIcon fontSize="small" />
+          </ActionButton>
+          <ActionButton
+            color="default"
+            onClick={() => {
+              setConfirmDialog({
+                isOpen: true,
+                title: "Delete this Product?",
+                subTitle: "You can't undo this operation.",
+                onConfirm: () => onDelete(product.productId),
+              });
+            }}
+          >
+            <CloseIcon fontSize="small" />
+          </ActionButton>
+        </StyledTableCell>
+      </StyledTableRow>
+      <StyledTableRow>
+        <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <Box margin={1}>{product.productName}</Box>
+          </Collapse>
+        </StyledTableCell>
+      </StyledTableRow>
+      <ConfirmDialog
+        confirmDialog={confirmDialog}
+        setConfirmDialog={setConfirmDialog}
+      />
+    </React.Fragment>
+  );
+}
+
 const ProductsTable = () => {
   const [products, setProducts] = useState<CProduct[]>([]);
   const pages = [10, 20, 30];
@@ -119,11 +211,10 @@ const ProductsTable = () => {
     message: "",
     type: "",
   });
-  const [confirmDialog, setConfirmDialog] = useState({
+  const [confirmDialog, setConfirmDialog] = useState<any>({
     isOpen: false,
     title: "",
     subTitle: "",
-    onConfirm: () => {},
   });
 
   const classes = useStyles();
@@ -140,7 +231,7 @@ const ProductsTable = () => {
       setProducts(dataFromServer);
     };
     getProducts();
-  }, []);
+  }, [products]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -208,30 +299,6 @@ const ProductsTable = () => {
     setOpenPopup(true);
   };
 
-  const onDelete = (id) => {
-    setConfirmDialog({ ...confirmDialog, isOpen: false });
-    axios.delete(`http://206.189.39.185:5031/api/Product/${id}`);
-    setNotify({
-      isOpen: true,
-      message: "Deleted Successfully",
-      type: "error",
-    });
-  };
-
-  // const rows = productsAfterPagingAndSoring().map((pro) => {
-  //   return {
-  //     productId: pro.productId,
-  //     productName: pro.productName,
-  //     desciption: pro.desciption,
-  //     price: pro.price,
-  //     height: pro.height,
-  //     width: pro.width,
-  //     length: pro.length,
-  //     weight: pro.weight,
-  //     packageQty: pro.packageQty,
-  //   };
-  // });
-
   return (
     <div>
       <div className="mt-5 mx-3">
@@ -265,6 +332,7 @@ const ProductsTable = () => {
           <Table className={classes.table} aria-label="customized table">
             <TableHead>
               <TableRow>
+                <StyledTableCell />
                 {labels.map((label) => (
                   <StyledTableCell
                     align={label.align ? "left" : "right"}
@@ -290,49 +358,13 @@ const ProductsTable = () => {
             </TableHead>
             <TableBody>
               {productsAfterPagingAndSoring().map((product) => (
-                <StyledTableRow key={product.productId}>
-                  <StyledTableCell component="th" scope="row">
-                    {product.productName}
-                  </StyledTableCell>
-                  <StyledTableCell align="right">
-                    {product.desciption}
-                  </StyledTableCell>
-                  <StyledTableCell align="right">
-                    {product.price}
-                  </StyledTableCell>
-                  <StyledTableCell align="right">
-                    {product.weight}
-                  </StyledTableCell>
-                  <StyledTableCell align="right">
-                    {product.height} * {product.width} * {product.length}
-                  </StyledTableCell>
-                  <StyledTableCell align="right">
-                    {product.packageQty}
-                  </StyledTableCell>
-                  <StyledTableCell align="right">
-                    <ActionButton
-                      color="default"
-                      onClick={() => {
-                        openInPopup(product);
-                      }}
-                    >
-                      <EditOutlinedIcon fontSize="small" />
-                    </ActionButton>
-                    <ActionButton
-                      color="default"
-                      onClick={() => {
-                        setConfirmDialog({
-                          isOpen: true,
-                          title: "Delete this Product?",
-                          subTitle: "You can't undo this operation.",
-                          onConfirm: () => onDelete(product.productId),
-                        });
-                      }}
-                    >
-                      <CloseIcon fontSize="small" />
-                    </ActionButton>
-                  </StyledTableCell>
-                </StyledTableRow>
+                <Row
+                  key={product.productId}
+                  product={product}
+                  openInPopup={openInPopup}
+                  setNotify={setNotify}
+                  confirmDialog={confirmDialog}
+                />
               ))}
             </TableBody>
           </Table>
@@ -358,10 +390,6 @@ const ProductsTable = () => {
           />
         </Popup>
         <Notification notify={notify} setNotify={setNotify} />
-        <ConfirmDialog
-          confirmDialog={confirmDialog}
-          setConfirmDialog={setConfirmDialog}
-        />
       </div>
     </div>
   );

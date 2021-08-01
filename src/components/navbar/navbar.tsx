@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import './NavBar.css';
+import "./NavBar.css";
 
 export class NavBar extends Component {
   render() {
@@ -34,13 +34,13 @@ export class NavBar extends Component {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/addproducts">
-                  Add
+                <Link className="nav-link" to="/testtable">
+                  TestTable
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/form">
-                  Form
+                <Link className="nav-link" to="/addproducts">
+                  Add
                 </Link>
               </li>
             </ul>

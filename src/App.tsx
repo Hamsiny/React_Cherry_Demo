@@ -5,6 +5,7 @@ import { Footer } from "./components/Footer/Footer";
 import Home from "./pages/Home/Home";
 import ProductManagement from "./pages/ProductManagement/ProductManagement";
 import { Products } from "./components/Products/Products";
+import CollapsibleTable from "./components/CollapsibleTable/Collapsibletable";
 
 function App() {
   return (
@@ -19,6 +20,9 @@ function App() {
         </Route>
         <Route path= '/addproducts' exact>
           <Products />
+        </Route>
+        <Route path= '/testtable' exact>
+          <CollapsibleTable />
         </Route>
       </Switch>
       <Footer />
