@@ -6,6 +6,7 @@ import Home from "./pages/Home/Home";
 import ProductManagement from "./pages/ProductManagement/ProductManagement";
 import { Products } from "./components/Products/Products";
 import CollapsibleTable from "./components/CollapsibleTable/Collapsibletable";
+import OrderPage from "./pages/OrderPage/OrderPage";
 
 function App() {
   return (
@@ -18,11 +19,14 @@ function App() {
         <Route path= '/products' exact>
           <ProductManagement />
         </Route>
-        <Route path= '/addproducts' exact>
+        {/* <Route path= '/addproducts' exact>
           <Products />
-        </Route>
+        </Route> */}
         <Route path= '/testtable' exact>
           <CollapsibleTable />
+        </Route>
+        <Route path= '/order' exact>
+          <OrderPage />
         </Route>
       </Switch>
       <Footer />
