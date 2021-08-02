@@ -221,7 +221,7 @@ const ProductsTable = () => {
 
   const fetchData = async () => {
     const data = await axios.get("http://206.189.39.185:5031/api/Product");
-    console.log(data.data.data);
+    // console.log(data.data.data);
     return data.data.data;
   };
 
@@ -306,7 +306,7 @@ const ProductsTable = () => {
         <TableContainer component={Paper} className="mt-5">
           <Toolbar>
             <Input
-              label="Search Employees"
+              label="Search Products"
               className={classes.searchInput}
               InputProps={{
                 startAdornment: (
