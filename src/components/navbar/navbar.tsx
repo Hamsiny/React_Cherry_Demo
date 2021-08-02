@@ -8,7 +8,7 @@ export class NavBar extends Component {
       <div>
         <nav className="navbar navbar-expand-sm navbar-dark bgred">
           <Link className="navbar-brand" to="/">
-            React Cherry Demo
+            <strong>React Cherry Demo</strong>
           </Link>
           <button
             className="navbar-toggler"
@@ -43,9 +43,16 @@ export class NavBar extends Component {
                   TestTable
                 </Link>
               </li>
+            </ul>
+            <ul className="navbar-nav ml-auto">
               <li className="nav-item">
-                <Link className="nav-link" to="/addproducts">
-                  Add
+                <Link className="nav-link" to="/register">
+                  Register
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/login">
+                  Log In
                 </Link>
               </li>
             </ul>
