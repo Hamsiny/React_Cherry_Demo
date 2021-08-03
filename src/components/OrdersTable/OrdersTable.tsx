@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   withStyles,
   Theme,
@@ -12,6 +12,8 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import Orders from "../../models/Orders";
+import axios from "axios";
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -59,12 +61,29 @@ const useStyles = makeStyles({
   },
 });
 
-const OrderTable = () => {
+const OrdersTable = () => {
+  const [orders, setOrders] = useState<Orders[]>([]);
   const classes = useStyles();
+
+  const getOrders = () => {
+    const ordersList: Orders[] = [];
+    axios
+      .get("http://206.189.39.185:5031/api/Order/GetOrderList/userId/status")
+      .then((response) => {
+        response.data.data.forEach((order: any) => {
+          ordersList.push(order);
+        });
+        setOrders(ordersList);
+      });
+  };
+
+  useEffect(() => {
+    getOrders();
+  }, [orders]);
 
   return (
     <div className="mt-5 mx-3">
-        <h3>Order List</h3>
+      <h3>Order List</h3>
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="customized table">
           <TableHead>
@@ -95,4 +114,4 @@ const OrderTable = () => {
   );
 };
 
-export default OrderTable;
+export default OrdersTable;

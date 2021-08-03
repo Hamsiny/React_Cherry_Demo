@@ -1,10 +1,10 @@
 import React from 'react'
-import OrderTable from '../../components/OrderTable/OrderTable'
+import OrdersTable from '../../components/OrdersTable/OrdersTable'
 
 const OrderPage = () => {
     return (
         <>
-            <OrderTable />
+            <OrdersTable />
         </>
     )
 }

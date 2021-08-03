@@ -178,7 +178,10 @@ function Row(props) {
         </StyledTableCell>
       </StyledTableRow>
       <StyledTableRow>
-        <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
+        <StyledTableCell
+          style={{ paddingBottom: 0, paddingTop: 0 }}
+          colSpan={8}
+        >
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>{product.productName}</Box>
           </Collapse>
@@ -219,17 +222,17 @@ const ProductsTable = () => {
 
   const classes = useStyles();
 
-  const fetchData = async () => {
-    const data = await axios.get("http://206.189.39.185:5031/api/Product");
-    // console.log(data.data.data);
-    return data.data.data;
+  const getProducts = () => {
+    const productsList: CProduct[] = [];
+    axios.get("http://206.189.39.185:5031/api/Product").then((response) => {
+      response.data.data.forEach((product: any) => {
+        productsList.push(product);
+      });
+      setProducts(productsList);
+    });
   };
 
   useEffect(() => {
-    const getProducts = async () => {
-      const dataFromServer = await fetchData();
-      setProducts(dataFromServer);
-    };
     getProducts();
   }, [products]);
 

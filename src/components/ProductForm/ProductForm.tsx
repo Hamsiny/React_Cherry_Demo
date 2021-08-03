@@ -43,16 +43,16 @@ export const ProductForm = (props) => {
       temp["productName"] = fieldValues.productName
         ? ""
         : "This field is required.";
-    if ("productCode" in fieldValues)
-      temp["productCode"] = fieldValues.productCode
-        ? ""
-        : "This field is required.";
-    if ("imageUrl" in fieldValues)
-      temp["imageUrl"] = fieldValues.imageUrl ? "" : "This field is required.";
-    if ("desciption" in fieldValues)
-      temp["desciption"] = fieldValues.desciption
-        ? ""
-        : "This field is required.";
+    // if ("productCode" in fieldValues)
+    //   temp["productCode"] = fieldValues.productCode
+    //     ? ""
+    //     : "This field is required.";
+    // if ("imageUrl" in fieldValues)
+    //   temp["imageUrl"] = fieldValues.imageUrl ? "" : "This field is required.";
+    // if ("desciption" in fieldValues)
+    //   temp["desciption"] = fieldValues.desciption
+    //     ? ""
+    //     : "This field is required.";
     if ("price" in fieldValues)
       temp["price"] = /^[0-9]+$/.test(fieldValues.price)
         ? ""
@@ -178,21 +178,21 @@ export const ProductForm = (props) => {
               name="productCode"
               value={values.productCode || ""}
               onChange={handleInputChange}
-              error={errors["productCode"]}
+              // error={errors["productCode"]}
             />
             <Input
               label="Image Url"
               name="imageUrl"
               value={values.imageUrl || ""}
               onChange={handleInputChange}
-              error={errors["imageUrl"]}
+              // error={errors["imageUrl"]}
             />
             <Input
               label="Description"
               name="desciption"
               value={values.desciption || ""}
               onChange={handleInputChange}
-              error={errors["desciption"]}
+              // error={errors["desciption"]}
             />
           </Grid>
           <Grid item xs={4}>
