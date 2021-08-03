@@ -9,30 +9,26 @@ import CollapsibleTable from "./components/CollapsibleTable/Collapsibletable";
 import OrderPage from "./pages/OrderPage/OrderPage";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import LogInPage from "./pages/LogInPage/LogInPage";
+import MUIDrawer from "./components/MUIDrawer/MUIDrawer";
+
+const routes = [
+  { path: "/", exact: true, component: <Home /> },
+  { path: "/products", exact: false, component: <ProductManagement /> },
+  { path: "/order", exact: false, component: <OrderPage /> },
+  { path: "/register", exact: false, component: <RegisterPage /> },
+  { path: "/login", exact: false, component: <LogInPage /> },
+];
 
 function App() {
   return (
     <Router>
-      <NavBar />
+      <MUIDrawer />
       <Switch>
-        <Route path= '/' exact>
-          <Home />
-        </Route>
-        <Route path= '/products' exact>
-          <ProductManagement />
-        </Route>
-        <Route path= '/testtable' exact>
-          <CollapsibleTable />
-        </Route>
-        <Route path= '/order' exact>
-          <OrderPage />
-        </Route>
-        <Route path= '/register' exact>
-          <RegisterPage />
-        </Route>
-        <Route path= '/login' exact>
-          <LogInPage />
-        </Route>
+        {routes.map((route) => (
+          <Route path={route.path} exact={route.exact}>
+            {route.component}
+          </Route>
+        ))}
       </Switch>
       <Footer />
     </Router>

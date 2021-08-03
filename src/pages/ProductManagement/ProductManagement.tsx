@@ -3,7 +3,6 @@ import axios from "axios";
 import Product from "../../models/Product";
 import CProduct from "../../models/CProduct";
 import ProductsTable from "../../components/ProductsTable/ProductsTable";
-import TestMaterialUI from "../../components/TestMaterialUI/TestMaterialUI";
 import { ProductForm } from "../../components/ProductForm/ProductForm";
 import { Products } from "../../components/Products/Products";
 
@@ -41,10 +40,9 @@ import { Products } from "../../components/Products/Products";
 
 const ProductManagement = () => {
   return (
-    <>
+    <div className="widthmargin">
       <ProductsTable />
-      {/* <TestMaterialUI /> */}
-    </>
+    </div>
   );
 };
 export default ProductManagement;

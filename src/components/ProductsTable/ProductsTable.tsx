@@ -304,7 +304,7 @@ const ProductsTable = () => {
 
   return (
     <div>
-      <div className="mt-5 mx-3">
+      <div className="mx-3">
         <h3>Product List</h3>
         <TableContainer component={Paper} className="mt-5">
           <Toolbar>
