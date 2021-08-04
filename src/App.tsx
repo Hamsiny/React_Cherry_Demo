@@ -25,7 +25,7 @@ function App() {
       <MUIDrawer />
       <Switch>
         {routes.map((route) => (
-          <Route path={route.path} exact={route.exact}>
+          <Route key={route.path} path={route.path} exact={route.exact}>
             {route.component}
           </Route>
         ))}
