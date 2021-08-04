@@ -30,8 +30,6 @@ import ProductManagement from "../../pages/ProductManagement/ProductManagement";
 import { Link } from "react-router-dom";
 import OrderPage from "../../pages/OrderPage/OrderPage";
 import Home from "../../pages/Home/Home";
-import LogInPage from "../../pages/LogInPage/LogInPage";
-import RegisterPage from "../../pages/RegisterPage/RegisterPage";
 
 
 const drawerWidth = 240;
@@ -132,7 +130,6 @@ const MUIDrawer = () => {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
-  const [component, setComponent] = useState<any>(comList[0]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -141,10 +138,6 @@ const MUIDrawer = () => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
-  const onClick = (item) => {
-    setComponent(item);
-  }
 
   return (
     <div className={classes.root}>
@@ -220,7 +213,6 @@ const MUIDrawer = () => {
               key={item.cId}
               to={item.path}
               style={{ textDecoration: "none", color: "#424242" }}
-              onClick={() => onClick(item)}
             >
               <ListItem button>
                 <ListItemIcon>{item.cIcon}</ListItemIcon>
