@@ -14,6 +14,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Orders from "../../models/Orders";
 import axios from "axios";
+import { TablePagination } from "@material-ui/core";
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -77,6 +78,9 @@ const labels = [
 
 const OrdersTable = () => {
   const [orders, setOrders] = useState<any>([]);
+  const pages = [10, 20, 30];
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(pages[page]);
   const classes = useStyles();
 
   const getOrders = () => {
@@ -94,6 +98,19 @@ const OrdersTable = () => {
   useEffect(() => {
     getOrders();
   }, [orders]);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const productsAfterPagingAndSoring = () => {
+    return orders.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
+  };
 
   return (
     <div className="mx-3">
@@ -113,7 +130,7 @@ const OrdersTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {orders.map((order) => (
+            {productsAfterPagingAndSoring().map((order) => (
               <StyledTableRow key={order.orderId}>
                 <StyledTableCell component="th" scope="row">
                   {order.productName}
@@ -132,6 +149,15 @@ const OrdersTable = () => {
             ))}
           </TableBody>
         </Table>
+        <TablePagination
+            component="div"
+            page={page}
+            rowsPerPageOptions={pages}
+            rowsPerPage={rowsPerPage}
+            count={orders.length}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
       </TableContainer>
     </div>
   );

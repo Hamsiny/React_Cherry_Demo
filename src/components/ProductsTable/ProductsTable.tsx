@@ -271,7 +271,7 @@ const ProductsTable = () => {
     return 0;
   }
 
-  const productsAfterPagingAndSoring = () => {
+  const productsAfterPagingAndSorting = () => {
     return stableSort(
       filterFn.fn(products),
       getComparator(order, orderBy)
@@ -360,7 +360,7 @@ const ProductsTable = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {productsAfterPagingAndSoring().map((product) => (
+              {productsAfterPagingAndSorting().map((product) => (
                 <Row
                   key={product.productId}
                   product={product}
