@@ -51,6 +51,8 @@ const useStyles = makeStyles((theme: Theme) =>
     container: {
       display: "flex",
       flexWrap: "wrap",
+      // position: "absolute",
+      // right: "10px",
     },
     textField: {
       marginLeft: theme.spacing(1),
@@ -82,7 +84,7 @@ const OrdersTable = () => {
   const classes = useStyles();
 
   const getOrders = () => {
-    const ordersList: Orders[] = [];
+    const ordersList: any[] = [];
     axios
       .get("http://206.189.39.185:5031/api/Order/GetOrderList/userId/status")
       .then((response) => {
@@ -149,12 +151,13 @@ const OrdersTable = () => {
     <div className="mx-3">
       <h3>Order List</h3>
       <TableContainer component={Paper} className="mt-5">
-        <Toolbar>
+        <Toolbar className="mt-2">
           <form className={classes.container} noValidate>
             <TextField
               id="datetime-local1"
               label="Start Date"
-              type="datetime-local"
+              variant="outlined"
+              type="date"
               className={classes.textField}
               InputLabelProps={{
                 shrink: true,
@@ -163,19 +166,20 @@ const OrdersTable = () => {
             <TextField
               id="datetime-local2"
               label="End Date"
-              type="datetime-local"
+              variant="outlined"
+              type="date"
               className={classes.textField}
               InputLabelProps={{
                 shrink: true,
               }}
             />
-            <Button
+            {/* <Button
               text="Search"
               variant="outlined"
               color="secondary"
               startIcon={<SearchIcon />}
               onClick={dateFilter}
-            />
+            /> */}
             <Button
               text="Reset"
               variant="outlined"
@@ -199,35 +203,45 @@ const OrdersTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {ordersAfterPagingAndFiltering().map((order) => (
-              <StyledTableRow key={order.orderId}>
-                <StyledTableCell component="th" scope="row">
-                  {order.productName}
-                </StyledTableCell>
-                <StyledTableCell align="right">{order.qty}</StyledTableCell>
-                <StyledTableCell align="right">{order.batchId}</StyledTableCell>
-                <StyledTableCell align="right">
-                  {order.recipient}
-                </StyledTableCell>
-                <StyledTableCell align="right">
-                  {order.recipientAddr}
-                </StyledTableCell>
-                <StyledTableCell align="right">
-                  {order.senderName}
-                </StyledTableCell>
-                <StyledTableCell align="right">
-                  {order.senderAddr}
-                </StyledTableCell>
-                <StyledTableCell align="right">
-                  {order.createdAt}
-                </StyledTableCell>
-                <StyledTableCell align="right">
-                  {order.submitedAt}
-                </StyledTableCell>
-                <StyledTableCell align="right">{order.trackNo}</StyledTableCell>
-                <StyledTableCell align="right">{order.status}</StyledTableCell>
-              </StyledTableRow>
-            ))}
+            {dateFilter().length === 0 ? (
+              <h3 className="m-2">There are no results.</h3>
+            ) : (
+              ordersAfterPagingAndFiltering().map((order) => (
+                <StyledTableRow key={order.orderId}>
+                  <StyledTableCell component="th" scope="row">
+                    {order.productName}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">{order.qty}</StyledTableCell>
+                  <StyledTableCell align="right">
+                    {order.batchId}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    {order.recipient}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    {order.recipientAddr}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    {order.senderName}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    {order.senderAddr}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    {order.createdAt}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    {order.submitedAt}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    {order.trackNo}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    {order.status}
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))
+            )}
           </TableBody>
         </Table>
         <TablePagination

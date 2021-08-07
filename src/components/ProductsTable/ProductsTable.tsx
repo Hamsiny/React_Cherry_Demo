@@ -305,7 +305,7 @@ const ProductsTable = () => {
       <div className="mx-3">
         <h3>Product List</h3>
         <TableContainer component={Paper} className="mt-5">
-          <Toolbar>
+          <Toolbar className="mt-2">
             <Input
               label="Search Products"
               className={classes.searchInput}
