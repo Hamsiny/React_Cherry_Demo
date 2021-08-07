@@ -24,7 +24,7 @@ const Notification = (props) => {
       className={classes.root}
       open={notify.isOpen}
       autoHideDuration={3000}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      anchorOrigin={{ vertical: "top", horizontal: "center" }}
       onClose={handleClose}
     >
       <Alert severity={notify.type} onClose={() =>
