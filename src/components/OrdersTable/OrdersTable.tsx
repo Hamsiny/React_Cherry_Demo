@@ -5,7 +5,7 @@ import {
   createStyles,
   makeStyles,
 } from "@material-ui/core/styles";
-import { TextField, Toolbar } from "@material-ui/core";
+import { InputAdornment, TableSortLabel, TextField, Toolbar } from "@material-ui/core";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -19,6 +19,8 @@ import { TablePagination } from "@material-ui/core";
 import { Button } from "../Controls/Button";
 import SearchIcon from "@material-ui/icons/Search";
 import RotateLeftIcon from "@material-ui/icons/RotateLeft";
+import { Input } from "../Controls/Input";
+import { Search } from "@material-ui/icons";
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -51,13 +53,16 @@ const useStyles = makeStyles((theme: Theme) =>
     container: {
       display: "flex",
       flexWrap: "wrap",
-      // position: "absolute",
-      // right: "10px",
+      position: "absolute",
+      right: "10px",
     },
     textField: {
       marginLeft: theme.spacing(1),
       marginRight: theme.spacing(1),
       width: 200,
+    },
+    searchInput: {
+      width: "30%",
     },
   })
 );
@@ -70,8 +75,8 @@ const labels = [
   { id: "recipientAddr", label: "Recipient Address", align: false },
   { id: "senderName", label: "Sender", align: false },
   { id: "senderAddr", label: "Sender Address", align: false },
-  { id: "createdAt", label: "Created Date", align: false },
-  { id: "submitedAt", label: "Submited Date", align: false },
+  { id: "createdAt", label: "Created Date", align: false, sorting: true },
+  { id: "submitedAt", label: "Submited Date", align: false, sorting: true },
   { id: "trackNo", label: "Track Number", align: false },
   { id: "status", label: "Status", align: false },
 ];
@@ -81,6 +86,13 @@ const OrdersTable = () => {
   const pages = [10, 20, 30];
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(pages[page]);
+  const [order, setOrder] = useState<any>();
+  const [orderBy, setOrderBy] = useState<any>();
+  const [filterFn, setFilterFn] = useState({
+    fn: (items) => {
+      return items;
+    },
+  });
   const classes = useStyles();
 
   const getOrders = () => {
@@ -108,8 +120,49 @@ const OrdersTable = () => {
     setPage(0);
   };
 
-  const ordersAfterPagingAndFiltering = () => {
-    return dateFilter().slice(page * rowsPerPage, (page + 1) * rowsPerPage);
+  function stableSort(array, comparator) {
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+      const order = comparator(a[0], b[0]);
+      if (order !== 0) return order;
+      return a[1] - b[1];
+    });
+    return stabilizedThis.map((el) => el[0]);
+  }
+
+  function getComparator(order, orderBy) {
+    return order === "desc"
+      ? (a, b) => descendingComparator(a, b, orderBy)
+      : (a, b) => -descendingComparator(a, b, orderBy);
+  }
+
+  function descendingComparator(a, b, orderBy) {
+    if (b[orderBy] < a[orderBy]) {
+      return -1;
+    }
+    if (b[orderBy] > a[orderBy]) {
+      return 1;
+    }
+    return 0;
+  }
+
+  const handleSortRequest = (cellId) => {
+    const isAsc = orderBy === cellId && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(cellId);
+  };
+
+  const handleSearch = (e) => {
+    let target = e.target;
+    setFilterFn({
+      fn: (items) => {
+        if (target.value === "") return items;
+        else
+          return items.filter((x) =>
+            x.productName.toLowerCase().includes(target.value)
+          );
+      },
+    });
   };
 
   const date1Element = document.getElementById(
@@ -147,11 +200,30 @@ const OrdersTable = () => {
     }
   };
 
+  const ordersAfterPagingAndFiltering = () => {
+    return stableSort(
+      filterFn.fn(dateFilter()),
+      getComparator(order, orderBy)
+    ).slice(page * rowsPerPage, (page + 1) * rowsPerPage);
+  };
+
   return (
     <div className="mx-3">
       <h3>Order List</h3>
       <TableContainer component={Paper} className="mt-5">
         <Toolbar className="mt-2">
+          <Input
+              label="Search Orders"
+              className={classes.searchInput}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Search />
+                  </InputAdornment>
+                ),
+              }}
+              onChange={handleSearch}
+            />
           <form className={classes.container} noValidate>
             <TextField
               id="datetime-local1"
@@ -197,7 +269,19 @@ const OrdersTable = () => {
                   key={item.id}
                   align={item.align ? "left" : "right"}
                 >
-                  {item.label}
+                  {!item.sorting ? (
+                    item.label
+                  ) : (
+                    <TableSortLabel
+                      active={orderBy === item.id}
+                      direction={orderBy === item.id ? order : "asc"}
+                      onClick={() => {
+                        handleSortRequest(item.id);
+                      }}
+                    >
+                      {item.label}
+                    </TableSortLabel>
+                  )}
                 </StyledTableCell>
               ))}
             </TableRow>
