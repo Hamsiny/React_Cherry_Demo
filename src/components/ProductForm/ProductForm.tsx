@@ -1,8 +1,6 @@
-import { Grid, makeStyles, TextField } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import CProduct from "../../models/CProduct";
-import Product from "../../models/Product";
+import { useEffect } from "react";
 import { Button } from "../Controls/Button";
 import { Input } from "../Controls/Input";
 import { Form, UseForm } from "../UseForm";
@@ -100,8 +98,8 @@ export const ProductForm = (props) => {
 
     setErrors({ ...temp });
 
-    if (fieldValues == values) {
-      return Object.values(temp).every((x) => x == "");
+    if (fieldValues === values) {
+      return Object.values(temp).every((x) => x === "");
     }
   };
 
@@ -131,7 +129,7 @@ export const ProductForm = (props) => {
         weight: parseInt(values.weight),
         packageQty: parseInt(values.packageQty),
       };
-      if (dataToUse.productId == "") {
+      if (dataToUse.productId === "") {
         console.log(dataToUse);
         axios.post(
           "http://206.189.39.185:5031/api/Product/ProductCreate",
@@ -149,8 +147,8 @@ export const ProductForm = (props) => {
       setNotify({
         isOpen: true,
         message: "Submitted Successfully",
-        type: "success"
-      })
+        type: "success",
+      });
     }
   };
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import clsx from "clsx";
 import {
   createStyles,
@@ -20,8 +20,6 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
 import DashboardRoundedIcon from "@material-ui/icons/DashboardRounded";
 import HomeRoundedIcon from "@material-ui/icons/HomeRounded";
 import DnsRoundedIcon from "@material-ui/icons/DnsRounded";
@@ -30,7 +28,6 @@ import ProductManagement from "../../pages/ProductManagement/ProductManagement";
 import { Link } from "react-router-dom";
 import OrderPage from "../../pages/OrderPage/OrderPage";
 import Home from "../../pages/Home/Home";
-
 
 const drawerWidth = 240;
 
@@ -108,21 +105,21 @@ const comList = [
     cName: "Home",
     path: "/",
     cIcon: <HomeRoundedIcon color="secondary" />,
-    component: <Home /> 
+    component: <Home />,
   },
   {
     cId: 2,
     cName: "Products",
     path: "/products",
     cIcon: <DnsRoundedIcon color="secondary" />,
-    component: <ProductManagement /> 
+    component: <ProductManagement />,
   },
   {
     cId: 3,
     cName: "Orders",
     path: "/order",
     cIcon: <ViewListRoundedIcon color="secondary" />,
-    component: <OrderPage />
+    component: <OrderPage />,
   },
 ];
 
@@ -164,7 +161,7 @@ const MUIDrawer = () => {
             React Cherry Demo
           </Typography>
           <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav ml-auto">
+            <ul className="navbar-nav ml-auto">
               <li className="nav-item">
                 <Link className="nav-link" to="/register">
                   Register
@@ -176,7 +173,7 @@ const MUIDrawer = () => {
                 </Link>
               </li>
             </ul>
-            </div>
+          </div>
         </Toolbar>
       </AppBar>
       <Drawer

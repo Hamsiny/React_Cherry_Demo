@@ -29,7 +29,6 @@ import AddIcon from "@material-ui/icons/Add";
 import { Button } from "../Controls/Button";
 import Popup from "../Popup/Popup";
 import { ProductForm } from "../ProductForm/ProductForm";
-import Product from "../../models/Product";
 import ActionButton from "../Controls/ActionButton";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import CloseIcon from "@material-ui/icons/Close";
@@ -119,7 +118,6 @@ function Row(props) {
     subTitle: "",
     onConfirm: () => {},
   });
-  const classes = useStyles();
 
   const onDelete = (id) => {
     setConfirmDialog({ ...confirmDialog, isOpen: false });
@@ -214,7 +212,7 @@ const ProductsTable = () => {
     message: "",
     type: "",
   });
-  const [confirmDialog, setConfirmDialog] = useState<any>({
+  const [confirmDialog] = useState<any>({
     isOpen: false,
     title: "",
     subTitle: "",
@@ -288,7 +286,7 @@ const ProductsTable = () => {
     let target = e.target;
     setFilterFn({
       fn: (items) => {
-        if (target.value == "") return items;
+        if (target.value === "") return items;
         else
           return items.filter((x) =>
             x.productName.toLowerCase().includes(target.value)

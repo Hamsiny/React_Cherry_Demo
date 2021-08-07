@@ -1,11 +1,8 @@
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { NavBar } from "./components/NavBar/NavBar";
 import { Footer } from "./components/Footer/Footer";
 import Home from "./pages/Home/Home";
 import ProductManagement from "./pages/ProductManagement/ProductManagement";
-import { Products } from "./components/Products/Products";
-import CollapsibleTable from "./components/CollapsibleTable/Collapsibletable";
 import OrderPage from "./pages/OrderPage/OrderPage";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import LogInPage from "./pages/LogInPage/LogInPage";
