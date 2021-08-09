@@ -1,9 +1,10 @@
 import React from 'react'
+import LogIn from '../../components/LogIn/LogIn'
 
 const LogInPage = () => {
     return (
-        <div className="widthmargin">
-            <h3>This is log in page.</h3>
+        <div>
+            <LogIn />
         </div>
     )
 }

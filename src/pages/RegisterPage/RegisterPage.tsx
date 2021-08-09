@@ -1,9 +1,10 @@
 import React from 'react'
+import Register from '../../components/Register/Register'
 
 const RegisterPage = () => {
     return (
-        <div className="widthmargin">
-            <h3>This is register page.</h3>
+        <div>
+            <Register />
         </div>
     )
 }
