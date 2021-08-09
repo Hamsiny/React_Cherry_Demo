@@ -20,7 +20,6 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import DashboardRoundedIcon from "@material-ui/icons/DashboardRounded";
 import HomeRoundedIcon from "@material-ui/icons/HomeRounded";
 import DnsRoundedIcon from "@material-ui/icons/DnsRounded";
 import ViewListRoundedIcon from "@material-ui/icons/ViewListRounded";
@@ -190,10 +189,10 @@ const MUIDrawer = () => {
         }}
       >
         <div className={classes.toolbar}>
-          <div className="mr-auto mt-1 ml-2">
+          {/* <div className="mr-auto mt-1 ml-2">
             <DashboardRoundedIcon color="secondary" />
             <span className="ml-4">List</span>
-          </div>
+          </div> */}
 
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? (

@@ -5,7 +5,14 @@ import {
   createStyles,
   makeStyles,
 } from "@material-ui/core/styles";
-import { InputAdornment, TableSortLabel, TextField, Toolbar } from "@material-ui/core";
+import {
+  Backdrop,
+  CircularProgress,
+  InputAdornment,
+  TableSortLabel,
+  TextField,
+  Toolbar,
+} from "@material-ui/core";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -13,11 +20,9 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import Orders from "../../models/Orders";
 import axios from "axios";
 import { TablePagination } from "@material-ui/core";
 import { Button } from "../Controls/Button";
-import SearchIcon from "@material-ui/icons/Search";
 import RotateLeftIcon from "@material-ui/icons/RotateLeft";
 import { Input } from "../Controls/Input";
 import { Search } from "@material-ui/icons";
@@ -62,7 +67,11 @@ const useStyles = makeStyles((theme: Theme) =>
       width: 200,
     },
     searchInput: {
-      width: "30%",
+      width: "20%",
+    },
+    backdrop: {
+      zIndex: theme.zIndex.drawer + 1,
+      color: "#fff",
     },
   })
 );
@@ -210,20 +219,27 @@ const OrdersTable = () => {
   return (
     <div className="mx-3">
       <h3>Order List</h3>
+      {orders.length === 0 ? (
+        <Backdrop className={classes.backdrop} open>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      ) : (
+        <></>
+      )}
       <TableContainer component={Paper} className="mt-5">
         <Toolbar className="mt-2">
           <Input
-              label="Search Orders"
-              className={classes.searchInput}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Search />
-                  </InputAdornment>
-                ),
-              }}
-              onChange={handleSearch}
-            />
+            label="Search Orders"
+            className={classes.searchInput}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search />
+                </InputAdornment>
+              ),
+            }}
+            onChange={handleSearch}
+          />
           <form className={classes.container} noValidate>
             <TextField
               id="datetime-local1"

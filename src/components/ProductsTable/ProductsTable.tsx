@@ -15,7 +15,9 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import {
+  Backdrop,
   Box,
+  CircularProgress,
   Collapse,
   IconButton,
   InputAdornment,
@@ -69,6 +71,10 @@ const useStyles = makeStyles((theme) => ({
     "& > *": {
       borderBottom: "unset",
     },
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: "#fff",
   },
 }));
 
@@ -304,6 +310,13 @@ const ProductsTable = () => {
     <div>
       <div className="mx-3">
         <h3>Product List</h3>
+        {products.length === 0 ? (
+          <Backdrop className={classes.backdrop} open>
+            <CircularProgress color="inherit" />
+          </Backdrop>
+        ) : (
+          <></>
+        )}
         <TableContainer component={Paper} className="mt-5">
           <Toolbar className="mt-2">
             <Input
@@ -358,15 +371,19 @@ const ProductsTable = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {productsAfterPagingAndSorting().map((product) => (
-                <Row
-                  key={product.productId}
-                  product={product}
-                  openInPopup={openInPopup}
-                  setNotify={setNotify}
-                  confirmDialog={confirmDialog}
-                />
-              ))}
+              {products.length === 0 ? (
+                <h3 className="m-2">There are no results.</h3>
+              ) : (
+                productsAfterPagingAndSorting().map((product) => (
+                  <Row
+                    key={product.productId}
+                    product={product}
+                    openInPopup={openInPopup}
+                    setNotify={setNotify}
+                    confirmDialog={confirmDialog}
+                  />
+                ))
+              )}
             </TableBody>
           </Table>
           <TablePagination
