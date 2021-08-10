@@ -277,6 +277,9 @@ const OrdersTable = () => {
             />
           </form>
         </Toolbar>
+        {dateFilter().length === 0 ? (
+              <h3 className="text-center mt-5">There are no results.</h3>
+            ) : (
         <Table className={classes.table} aria-label="customized table">
           <TableHead>
             <TableRow>
@@ -303,10 +306,7 @@ const OrdersTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {dateFilter().length === 0 ? (
-              <h3 className="m-2">There are no results.</h3>
-            ) : (
-              ordersAfterPagingAndFiltering().map((order) => (
+              {ordersAfterPagingAndFiltering().map((order) => (
                 <StyledTableRow key={order.orderId}>
                   <StyledTableCell component="th" scope="row">
                     {order.productName}
@@ -340,10 +340,10 @@ const OrdersTable = () => {
                     {order.status}
                   </StyledTableCell>
                 </StyledTableRow>
-              ))
-            )}
+              ))}
           </TableBody>
         </Table>
+        )}
         <TablePagination
           component="div"
           page={page}

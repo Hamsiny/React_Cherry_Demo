@@ -343,38 +343,38 @@ const ProductsTable = () => {
               }}
             />
           </Toolbar>
-          <Table className={classes.table} aria-label="customized table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell />
-                {labels.map((label) => (
-                  <StyledTableCell
-                    align={label.align ? "left" : "right"}
-                    key={label.id}
-                    sortDirection={orderBy === label.id ? order : false}
-                  >
-                    {label.disableSorting ? (
-                      label.label
-                    ) : (
-                      <TableSortLabel
-                        active={orderBy === label.id}
-                        direction={orderBy === label.id ? order : "asc"}
-                        onClick={() => {
-                          handleSortRequest(label.id);
-                        }}
-                      >
-                        {label.label}
-                      </TableSortLabel>
-                    )}
-                  </StyledTableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {products.length === 0 ? (
-                <h3 className="m-2">There are no results.</h3>
-              ) : (
-                productsAfterPagingAndSorting().map((product) => (
+          {products.length === 0 ? (
+            <h3 className="mt-5 text-center">There are no results.</h3>
+          ) : (
+            <Table className={classes.table} aria-label="customized table">
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell />
+                  {labels.map((label) => (
+                    <StyledTableCell
+                      align={label.align ? "left" : "right"}
+                      key={label.id}
+                      sortDirection={orderBy === label.id ? order : false}
+                    >
+                      {label.disableSorting ? (
+                        label.label
+                      ) : (
+                        <TableSortLabel
+                          active={orderBy === label.id}
+                          direction={orderBy === label.id ? order : "asc"}
+                          onClick={() => {
+                            handleSortRequest(label.id);
+                          }}
+                        >
+                          {label.label}
+                        </TableSortLabel>
+                      )}
+                    </StyledTableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {productsAfterPagingAndSorting().map((product) => (
                   <Row
                     key={product.productId}
                     product={product}
@@ -382,10 +382,10 @@ const ProductsTable = () => {
                     setNotify={setNotify}
                     confirmDialog={confirmDialog}
                   />
-                ))
-              )}
-            </TableBody>
-          </Table>
+                ))}
+              </TableBody>
+            </Table>
+          )}
           <TablePagination
             component="div"
             page={page}
