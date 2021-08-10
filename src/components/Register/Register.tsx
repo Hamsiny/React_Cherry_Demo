@@ -13,7 +13,7 @@ import { Form, UseForm } from "../UseForm";
 import axios from "axios";
 import Notification from "../Notification/Notification";
 
-const initialUserValues = {
+const initialRegisterValues = {
   password: "",
   userName: "",
   type: "",
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp(props) {
+const Register = (props) => {
   const { notify, setNotify } = props;
   const classes = useStyles();
   const validate = (fieldValues = values) => {
@@ -81,8 +81,8 @@ export default function SignUp(props) {
     }
   };
 
-  const { values, setValues, errors, setErrors, handleInputChange } = UseForm(
-    initialUserValues,
+  const { values, errors, setErrors, handleInputChange, resetForm } = UseForm(
+    initialRegisterValues,
     true,
     validate
   );
@@ -102,15 +102,24 @@ export default function SignUp(props) {
         email: values.email,
       };
       console.log(dataToUse);
-      axios.post(
-        "http://206.189.39.185:5031/api/User/UserRegister",
-        dataToUse
-      );
-      setNotify({
-        isOpen: true,
-        message: "Submitted Successfully",
-        type: "success",
-      });
+      axios
+        .post("http://206.189.39.185:5031/api/User/UserRegister", dataToUse)
+        .then(() => {
+          resetForm();
+          setNotify({
+            isOpen: true,
+            message: "Your Account created Successfully",
+            type: "success",
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          setNotify({
+            isOpen: true,
+            message: "Error Occured",
+            type: "error",
+          });
+        });
     }
   };
 
@@ -236,3 +245,5 @@ export default function SignUp(props) {
     </Container>
   );
 }
+
+export default Register;

@@ -29,7 +29,11 @@ function App() {
       exact: false,
       component: <RegisterPage notify={notify} setNotify={setNotify} />,
     },
-    { path: "/login", exact: false, component: <LogInPage /> },
+    {
+      path: "/login",
+      exact: false,
+      component: <LogInPage notify={notify} setNotify={setNotify} />,
+    },
   ];
 
   return (

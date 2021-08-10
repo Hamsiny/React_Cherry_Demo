@@ -2,7 +2,6 @@ import React from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Grid from "@material-ui/core/Grid";
@@ -11,6 +10,15 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { Link } from "react-router-dom";
+import { Form, UseForm } from "../UseForm";
+import { Input } from "../Controls/Input";
+import axios from "axios";
+import Notification from "../Notification/Notification";
+
+const initialLoginValues = {
+  userName: "",
+  password: "",
+};
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -25,15 +33,67 @@ const useStyles = makeStyles((theme) => ({
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(3),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
 }));
 
-export default function LogIn() {
+const LogIn = (props) => {
+  const { notify, setNotify } = props;
   const classes = useStyles();
+
+  const validate = (fieldValues = values) => {
+    let temp = {
+      ...errors,
+    };
+
+    if ("userName" in fieldValues)
+      temp["userName"] = fieldValues.userName ? "" : "This field is required.";
+    if ("password" in fieldValues)
+      temp["password"] = fieldValues.password ? "" : "This field is required.";
+
+    setErrors({ ...temp });
+
+    if (fieldValues === values) {
+      return Object.values(temp).every((x) => x === "");
+    }
+  };
+
+  const { values, errors, setErrors, handleInputChange } = UseForm(
+    initialLoginValues,
+    true,
+    validate
+  );
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validate()) {
+      const dataToUse = {
+        userName: values.userName,
+        password: values.password,
+      };
+      axios
+        .post("http://206.189.39.185:5031/api/User/UserLogin", dataToUse)
+        .then((response) => {
+          console.log(response);
+          setNotify({
+            isOpen: true,
+            message: "Log In Successfully",
+            type: "success",
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          setNotify({
+            isOpen: true,
+            message: "Errors Occured on Log In",
+            type: "error",
+          });
+        });
+    }
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -45,51 +105,55 @@ export default function LogIn() {
         <Typography component="h1" variant="h5">
           Log in
         </Typography>
-        <form className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
+        <Form className={classes.form} onSubmit={handleSubmit}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Input
+                label="User Name"
+                name="userName"
+                value={values.userName || ""}
+                onChange={handleInputChange}
+                error={errors["userName"]}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Input
+                label="Password"
+                name="password"
+                value={values.password || ""}
+                onChange={handleInputChange}
+                error={errors["password"]}
+                type="password"
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={<Checkbox value="remember" color="secondary" />}
+                label="Remember me"
+              />
+            </Grid>
+          </Grid>
           <Button
-            // type="submit"
+            type="submit"
             fullWidth
             variant="contained"
-            color="primary"
+            color="secondary"
             className={classes.submit}
           >
             Log In
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link to="/register">
-                Don't have an account? Sign Up
-              </Link>
+              <Link to="/register">Don't have an account? Sign Up</Link>
             </Grid>
           </Grid>
-        </form>
+        </Form>
+        <Notification notify={notify} setNotify={setNotify} />
       </div>
     </Container>
   );
-}
+};
+
+export default LogIn;

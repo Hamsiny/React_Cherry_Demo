@@ -1,10 +1,11 @@
 import React from 'react'
 import LogIn from '../../components/LogIn/LogIn'
 
-const LogInPage = () => {
+const LogInPage = (props) => {
+    const {notify, setNotify} = props
     return (
         <div>
-            <LogIn />
+            <LogIn notify={notify} setNotify={setNotify}/>
         </div>
     )
 }
