@@ -51,47 +51,47 @@ export const ProductForm = (props) => {
     //   temp["desciption"] = fieldValues.desciption
     //     ? ""
     //     : "This field is required.";
-    if ("price" in fieldValues)
+    if (values.price)
       temp["price"] = /^[0-9]+$/.test(fieldValues.price)
         ? ""
         : "You must input number.";
-    if ("priceRrp" in fieldValues)
+    if (values.priceRrp)
       temp["priceRrp"] = /^[0-9]+$/.test(fieldValues.priceRrp)
         ? ""
         : "You must input number.";
-    if ("priceShopify" in fieldValues)
+    if (values.priceShopify)
       temp["priceShopify"] = /^[0-9]+$/.test(fieldValues.priceShopify)
         ? ""
         : "You must input number.";
-    if ("priceAgent" in fieldValues)
+    if (values.priceAgent)
       temp["priceAgent"] = /^[0-9]+$/.test(fieldValues.priceAgent)
         ? ""
         : "You must input number.";
-    if ("price1212" in fieldValues)
+    if (values.price1212)
       temp["price1212"] = /^[0-9]+$/.test(fieldValues.price1212)
         ? ""
         : "You must input number.";
-    if ("priceSpecial" in fieldValues)
+    if (values.priceSpecial)
       temp["priceSpecial"] = /^[0-9]+$/.test(fieldValues.priceSpecial)
         ? ""
         : "You must input number.";
-    if ("height" in fieldValues)
+    if (values.height)
       temp["height"] = /^[0-9]+$/.test(fieldValues.height)
         ? ""
         : "You must input number.";
-    if ("width" in fieldValues)
+    if (values.width)
       temp["width"] = /^[0-9]+$/.test(fieldValues.width)
         ? ""
         : "You must input number.";
-    if ("length" in fieldValues)
+    if (values.length)
       temp["length"] = /^[0-9]+$/.test(fieldValues.length)
         ? ""
         : "You must input number.";
-    if ("weight" in fieldValues)
+    if (values.weight)
       temp["weight"] = /^[0-9]+$/.test(fieldValues.weight)
         ? ""
         : "You must input number.";
-    if ("packageQty" in fieldValues)
+    if (values.packageQty)
       temp["packageQty"] = /^[0-9]+$/.test(fieldValues.packageQty)
         ? ""
         : "You must input number.";
