@@ -199,7 +199,8 @@ function Row(props) {
   );
 }
 
-const ProductsTable = () => {
+const ProductsTable = (props) => {
+  const { notify, setNotify } = props;
   const [products, setProducts] = useState<CProduct[]>([]);
   const pages = [10, 20, 30];
   const [page, setPage] = useState(0);
@@ -213,11 +214,7 @@ const ProductsTable = () => {
   });
   const [openPopup, setOpenPopup] = useState(false);
   const [productForEdit, setProductForEdit] = useState(null);
-  const [notify, setNotify] = useState({
-    isOpen: false,
-    message: "",
-    type: "",
-  });
+  
   const [confirmDialog] = useState<any>({
     isOpen: false,
     title: "",

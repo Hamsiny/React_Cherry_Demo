@@ -10,6 +10,8 @@ import Container from "@material-ui/core/Container";
 import { Link } from "react-router-dom";
 import { Input } from "../Controls/Input";
 import { Form, UseForm } from "../UseForm";
+import axios from "axios";
+import Notification from "../Notification/Notification";
 
 const initialUserValues = {
   password: "",
@@ -43,74 +45,34 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp() {
+export default function SignUp(props) {
+  const { notify, setNotify } = props;
   const classes = useStyles();
-
   const validate = (fieldValues = values) => {
     let temp = {
       ...errors,
     };
 
     if ("userName" in fieldValues)
-      temp["userName"] = fieldValues.userName
+      temp["userName"] = fieldValues.userName ? "" : "This field is required.";
+    if ("password" in fieldValues)
+      temp["password"] = fieldValues.password ? "" : "This field is required.";
+    if ("type" in fieldValues)
+      temp["type"] = fieldValues.type ? "" : "This field is required.";
+    if ("discountRate" in fieldValues)
+      temp["discountRate"] = fieldValues.discountRate
         ? ""
         : "This field is required.";
-    // if ("productCode" in fieldValues)
-    //   temp["productCode"] = fieldValues.productCode
-    //     ? ""
-    //     : "This field is required.";
-    // if ("imageUrl" in fieldValues)
-    //   temp["imageUrl"] = fieldValues.imageUrl ? "" : "This field is required.";
-    // if ("desciption" in fieldValues)
-    //   temp["desciption"] = fieldValues.desciption
-    //     ? ""
-    //     : "This field is required.";
     if (values.mobileNumber)
       temp["mobileNumber"] = /^[0-9]+$/.test(fieldValues.mobileNumber)
         ? ""
         : "You must input number.";
-    if (values.emial)
+    if (values.email)
       temp["email"] = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/.test(
         fieldValues.email
       )
         ? ""
         : "You must input valid email address.";
-    if (values.priceShopify)
-      temp["priceShopify"] = /^[0-9]+$/.test(fieldValues.priceShopify)
-        ? ""
-        : "You must input number.";
-    if (values.priceAgent)
-      temp["priceAgent"] = /^[0-9]+$/.test(fieldValues.priceAgent)
-        ? ""
-        : "You must input number.";
-    if (values.price1212)
-      temp["price1212"] = /^[0-9]+$/.test(fieldValues.price1212)
-        ? ""
-        : "You must input number.";
-    if (values.priceSpecial)
-      temp["priceSpecial"] = /^[0-9]+$/.test(fieldValues.priceSpecial)
-        ? ""
-        : "You must input number.";
-    if (values.height)
-      temp["height"] = /^[0-9]+$/.test(fieldValues.height)
-        ? ""
-        : "You must input number.";
-    if (values.width)
-      temp["width"] = /^[0-9]+$/.test(fieldValues.width)
-        ? ""
-        : "You must input number.";
-    if (values.length)
-      temp["length"] = /^[0-9]+$/.test(fieldValues.length)
-        ? ""
-        : "You must input number.";
-    if (values.weight)
-      temp["weight"] = /^[0-9]+$/.test(fieldValues.weight)
-        ? ""
-        : "You must input number.";
-    if (values.packageQty)
-      temp["packageQty"] = /^[0-9]+$/.test(fieldValues.packageQty)
-        ? ""
-        : "You must input number.";
 
     setErrors({ ...temp });
 
@@ -127,7 +89,29 @@ export default function SignUp() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(values);
+    if (validate()) {
+      const dataToUse = {
+        password: values.password,
+        userName: values.userName,
+        type: parseInt(values.type),
+        discountRate: parseInt(values.discountRate),
+        firstName: values.firstName,
+        lastName: values.lastName,
+        companyName: values.companyName,
+        mobileNumber: values.mobileNumber,
+        email: values.email,
+      };
+      console.log(dataToUse);
+      axios.post(
+        "http://206.189.39.185:5031/api/User/UserRegister",
+        dataToUse
+      );
+      setNotify({
+        isOpen: true,
+        message: "Submitted Successfully",
+        type: "success",
+      });
+    }
   };
 
   return (
@@ -247,6 +231,7 @@ export default function SignUp() {
             </Grid>
           </Grid>
         </Form>
+        <Notification notify={notify} setNotify={setNotify} />
       </div>
     </Container>
   );

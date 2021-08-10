@@ -1,9 +1,10 @@
 import ProductsTable from "../../components/ProductsTable/ProductsTable";
 
-const ProductManagement = () => {
+const ProductManagement = (props) => {
+  const { notify, setNotify } = props;
   return (
     <div className="widthmargin">
-      <ProductsTable />
+      <ProductsTable notify={notify} setNotify={setNotify}/>
     </div>
   );
 };

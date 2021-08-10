@@ -7,16 +7,31 @@ import OrderPage from "./pages/OrderPage/OrderPage";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import LogInPage from "./pages/LogInPage/LogInPage";
 import MUIDrawer from "./components/MUIDrawer/MUIDrawer";
-
-const routes = [
-  { path: "/", exact: true, component: <Home /> },
-  { path: "/products", exact: false, component: <ProductManagement /> },
-  { path: "/order", exact: false, component: <OrderPage /> },
-  { path: "/register", exact: false, component: <RegisterPage /> },
-  { path: "/login", exact: false, component: <LogInPage /> },
-];
+import { useState } from "react";
 
 function App() {
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
+
+  const routes = [
+    { path: "/", exact: true, component: <Home /> },
+    {
+      path: "/products",
+      exact: false,
+      component: <ProductManagement notify={notify} setNotify={setNotify} />,
+    },
+    { path: "/order", exact: false, component: <OrderPage /> },
+    {
+      path: "/register",
+      exact: false,
+      component: <RegisterPage notify={notify} setNotify={setNotify} />,
+    },
+    { path: "/login", exact: false, component: <LogInPage /> },
+  ];
+
   return (
     <Router>
       <MUIDrawer />
