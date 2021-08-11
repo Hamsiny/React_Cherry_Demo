@@ -41,7 +41,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LogIn = (props) => {
-  const { notify, setNotify, userTokenKey } = props;
+  const {
+    notify,
+    setNotify,
+    userTokenKey,
+    setIsLoggedIn,
+    setUserLoggedIn,
+  } = props;
   const classes = useStyles();
 
   const checkboxElement = document.getElementById(
@@ -80,8 +86,6 @@ const LogIn = (props) => {
     localStorage.setItem(key, JSON.stringify(item));
   };
 
-  
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
@@ -93,10 +97,15 @@ const LogIn = (props) => {
         .post("http://206.189.39.185:5031/api/User/UserLogin", dataToUse)
         .then((response) => {
           console.log(response);
-          const userToken = response.data.data.token;
+          const user = response.data.data;
           if (checkboxElement !== null) {
             if (checkboxElement.checked) {
-              setWithExpiry(userTokenKey, userToken, 10000);
+              setWithExpiry(userTokenKey, user, 10000);
+              setIsLoggedIn(true);
+              setUserLoggedIn(user);
+            } else {
+              setUserLoggedIn(user);
+              setIsLoggedIn(true);
             }
           }
           resetForm();

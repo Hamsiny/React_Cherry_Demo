@@ -7,15 +7,16 @@ import OrderPage from "./pages/OrderPage/OrderPage";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import LogInPage from "./pages/LogInPage/LogInPage";
 import MUIDrawer from "./components/MUIDrawer/MUIDrawer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-function App() {
+const App = () => {
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
     type: "",
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userLoggedIn, setUserLoggedIn] = useState<any>(null);
 
   const userTokenKey = "USER_TOKEN_KEY_CHERRY";
 
@@ -37,9 +38,12 @@ function App() {
     return item.value;
   };
 
-  if (getWithExpiry(userTokenKey) !== null) {
-    setIsLoggedIn(true);
-  } 
+  useEffect(() => {
+    if (getWithExpiry(userTokenKey) !== null) {
+      setIsLoggedIn(true);
+      setUserLoggedIn(getWithExpiry(userTokenKey));
+    }
+  }, []);
 
   const routes = [
     { path: "/", exact: true, component: <Home /> },
@@ -62,6 +66,10 @@ function App() {
           notify={notify}
           setNotify={setNotify}
           userTokenKey={userTokenKey}
+          isLoggedIn={isLoggedIn}
+          setIsLoggedIn={setIsLoggedIn}
+          userLoggedIn={userLoggedIn}
+          setUserLoggedIn={setUserLoggedIn}
         />
       ),
     },
@@ -69,7 +77,11 @@ function App() {
 
   return (
     <Router>
-      <MUIDrawer isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
+      <MUIDrawer
+        isLoggedIn={isLoggedIn}
+        setIsLoggedIn={setIsLoggedIn}
+        userLoggedIn={userLoggedIn}
+      />
       <Switch>
         {routes.map((route) => (
           <Route key={route.path} path={route.path} exact={route.exact}>
@@ -80,6 +92,6 @@ function App() {
       <Footer />
     </Router>
   );
-}
+};
 
 export default App;

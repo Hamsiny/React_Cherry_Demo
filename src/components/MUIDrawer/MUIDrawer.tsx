@@ -123,7 +123,7 @@ const comList = [
 ];
 
 const MUIDrawer = (props) => {
-  const { isLoggedIn, setIsLoggedIn } = props;
+  const { isLoggedIn, setIsLoggedIn, userLoggedIn } = props;
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
@@ -138,7 +138,7 @@ const MUIDrawer = (props) => {
 
   const handleLogout = () => {
     setIsLoggedIn(false);
-  }
+  };
 
   return (
     <div className={classes.root}>
@@ -168,10 +168,12 @@ const MUIDrawer = (props) => {
             {isLoggedIn ? (
               <ul className="navbar-nav ml-auto">
                 <li className="nav-item">
-                  <span className="nav-link" style={{color: "white"}}>Hi User</span>
+                  <span className="nav-link" style={{ color: "white" }}>
+                    Hi {userLoggedIn["userName"]}
+                  </span>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" onClick={handleLogout} to="/login">
+                  <Link className="nav-link" onClick={handleLogout} to="/">
                     Log Out
                   </Link>
                 </li>
