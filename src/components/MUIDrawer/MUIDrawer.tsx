@@ -123,7 +123,13 @@ const comList = [
 ];
 
 const MUIDrawer = (props) => {
-  const { isLoggedIn, setIsLoggedIn, userLoggedIn } = props;
+  const {
+    isLoggedIn,
+    setIsLoggedIn,
+    userLoggedIn,
+    setUserLoggedIn,
+    userTokenKey,
+  } = props;
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
@@ -138,6 +144,8 @@ const MUIDrawer = (props) => {
 
   const handleLogout = () => {
     setIsLoggedIn(false);
+    setUserLoggedIn(null);
+    localStorage.removeItem(userTokenKey);
   };
 
   return (
@@ -162,10 +170,10 @@ const MUIDrawer = (props) => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            React Cherry Demo
+            <strong>React Cherry Demo</strong>
           </Typography>
           <div className="collapse navbar-collapse" id="navbarNav">
-            {isLoggedIn ? (
+            {isLoggedIn && userLoggedIn !== null ? (
               <ul className="navbar-nav ml-auto">
                 <li className="nav-item">
                   <span className="nav-link" style={{ color: "white" }}>
@@ -173,7 +181,7 @@ const MUIDrawer = (props) => {
                   </span>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" onClick={handleLogout} to="/">
+                  <Link className="nav-link" onClick={handleLogout} to="/login">
                     Log Out
                   </Link>
                 </li>

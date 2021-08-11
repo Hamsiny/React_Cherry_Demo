@@ -8,6 +8,14 @@ import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import LogInPage from "./pages/LogInPage/LogInPage";
 import MUIDrawer from "./components/MUIDrawer/MUIDrawer";
 import { useEffect, useState } from "react";
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+
+const theme = createTheme({
+  typography: {
+    fontFamily: 'Montserrat',
+  },
+});
+
 
 const App = () => {
   const [notify, setNotify] = useState({
@@ -76,11 +84,14 @@ const App = () => {
   ];
 
   return (
+    <ThemeProvider theme={theme}>
     <Router>
       <MUIDrawer
         isLoggedIn={isLoggedIn}
         setIsLoggedIn={setIsLoggedIn}
         userLoggedIn={userLoggedIn}
+        setUserLoggedIn={setUserLoggedIn}
+        userTokenKey={userTokenKey}
       />
       <Switch>
         {routes.map((route) => (
@@ -91,6 +102,7 @@ const App = () => {
       </Switch>
       <Footer />
     </Router>
+    </ThemeProvider>
   );
 };
 
