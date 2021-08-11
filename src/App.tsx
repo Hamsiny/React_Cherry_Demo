@@ -1,5 +1,10 @@
 import "./App.css";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import { Footer } from "./components/Footer/Footer";
 import Home from "./pages/Home/Home";
 import ProductManagement from "./pages/ProductManagement/ProductManagement";
@@ -12,10 +17,9 @@ import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 
 const theme = createTheme({
   typography: {
-    fontFamily: 'Montserrat',
+    fontFamily: "Montserrat",
   },
 });
-
 
 const App = () => {
   const [notify, setNotify] = useState({
@@ -58,9 +62,10 @@ const App = () => {
     {
       path: "/products",
       exact: false,
+      isGuard: true,
       component: <ProductManagement notify={notify} setNotify={setNotify} />,
     },
-    { path: "/order", exact: false, component: <OrderPage /> },
+    { path: "/order", exact: false, isGuard: true, component: <OrderPage /> },
     {
       path: "/register",
       exact: false,
@@ -85,23 +90,31 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-    <Router>
-      <MUIDrawer
-        isLoggedIn={isLoggedIn}
-        setIsLoggedIn={setIsLoggedIn}
-        userLoggedIn={userLoggedIn}
-        setUserLoggedIn={setUserLoggedIn}
-        userTokenKey={userTokenKey}
-      />
-      <Switch>
-        {routes.map((route) => (
-          <Route key={route.path} path={route.path} exact={route.exact}>
-            {route.component}
-          </Route>
-        ))}
-      </Switch>
-      <Footer />
-    </Router>
+      <Router>
+        <MUIDrawer
+          isLoggedIn={isLoggedIn}
+          setIsLoggedIn={setIsLoggedIn}
+          userLoggedIn={userLoggedIn}
+          setUserLoggedIn={setUserLoggedIn}
+          userTokenKey={userTokenKey}
+        />
+        <Switch>
+          {routes.map((route) => (
+            <Route key={route.path} path={route.path} exact={route.exact}>
+              {route.isGuard ? (
+                !isLoggedIn ? (
+                  <Redirect to="/login" />
+                ) : (
+                  route.component
+                )
+              ) : (
+                route.component
+              )}
+            </Route>
+          ))}
+        </Switch>
+        <Footer />
+      </Router>
     </ThemeProvider>
   );
 };
