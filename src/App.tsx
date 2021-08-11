@@ -15,6 +15,31 @@ function App() {
     message: "",
     type: "",
   });
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const userTokenKey = "USER_TOKEN_KEY_CHERRY";
+
+  const getWithExpiry = (key) => {
+    const itemStr = localStorage.getItem(key);
+
+    if (!itemStr) {
+      return null;
+    }
+    const item = JSON.parse(itemStr);
+    const now = new Date();
+    // compare the expiry time of the item with the current time
+    if (now.getTime() > item.expiry) {
+      // If the item is expired, delete the item from storage
+      // and return null
+      localStorage.removeItem(key);
+      return null;
+    }
+    return item.value;
+  };
+
+  if (getWithExpiry(userTokenKey) !== null) {
+    setIsLoggedIn(true);
+  } 
 
   const routes = [
     { path: "/", exact: true, component: <Home /> },
@@ -32,13 +57,19 @@ function App() {
     {
       path: "/login",
       exact: false,
-      component: <LogInPage notify={notify} setNotify={setNotify} />,
+      component: (
+        <LogInPage
+          notify={notify}
+          setNotify={setNotify}
+          userTokenKey={userTokenKey}
+        />
+      ),
     },
   ];
 
   return (
     <Router>
-      <MUIDrawer />
+      <MUIDrawer isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
       <Switch>
         {routes.map((route) => (
           <Route key={route.path} path={route.path} exact={route.exact}>

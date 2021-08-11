@@ -41,8 +41,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LogIn = (props) => {
-  const { notify, setNotify } = props;
+  const { notify, setNotify, userTokenKey } = props;
   const classes = useStyles();
+
+  const checkboxElement = document.getElementById(
+    "rememberCheckbox"
+  ) as HTMLInputElement;
 
   const validate = (fieldValues = values) => {
     let temp = {
@@ -61,11 +65,22 @@ const LogIn = (props) => {
     }
   };
 
-  const { values, errors, setErrors, handleInputChange } = UseForm(
+  const { values, errors, setErrors, handleInputChange, resetForm } = UseForm(
     initialLoginValues,
     true,
     validate
   );
+
+  const setWithExpiry = (key, value, ttl) => {
+    const now = new Date();
+    const item = {
+      value: value,
+      expiry: now.getTime() + ttl,
+    };
+    localStorage.setItem(key, JSON.stringify(item));
+  };
+
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -78,6 +93,13 @@ const LogIn = (props) => {
         .post("http://206.189.39.185:5031/api/User/UserLogin", dataToUse)
         .then((response) => {
           console.log(response);
+          const userToken = response.data.data.token;
+          if (checkboxElement !== null) {
+            if (checkboxElement.checked) {
+              setWithExpiry(userTokenKey, userToken, 10000);
+            }
+          }
+          resetForm();
           setNotify({
             isOpen: true,
             message: "Log In Successfully",
@@ -105,6 +127,9 @@ const LogIn = (props) => {
         <Typography component="h1" variant="h5">
           Log in
         </Typography>
+        {/* <Typography component="h1" variant="h5">
+          {sessionStorage.getItem(userTokenKey)}
+        </Typography> */}
         <Form className={classes.form} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -130,7 +155,13 @@ const LogIn = (props) => {
             </Grid>
             <Grid item xs={12}>
               <FormControlLabel
-                control={<Checkbox value="remember" color="secondary" />}
+                control={
+                  <Checkbox
+                    id="rememberCheckbox"
+                    value="remember"
+                    color="secondary"
+                  />
+                }
                 label="Remember me"
               />
             </Grid>

@@ -122,7 +122,8 @@ const comList = [
   },
 ];
 
-const MUIDrawer = () => {
+const MUIDrawer = (props) => {
+  const { isLoggedIn, setIsLoggedIn } = props;
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
@@ -134,6 +135,10 @@ const MUIDrawer = () => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+  }
 
   return (
     <div className={classes.root}>
@@ -160,18 +165,31 @@ const MUIDrawer = () => {
             React Cherry Demo
           </Typography>
           <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <Link className="nav-link" to="/register">
-                  Register
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/login">
-                  Log In
-                </Link>
-              </li>
-            </ul>
+            {isLoggedIn ? (
+              <ul className="navbar-nav ml-auto">
+                <li className="nav-item">
+                  <span className="nav-link" style={{color: "white"}}>Hi User</span>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" onClick={handleLogout} to="/login">
+                    Log Out
+                  </Link>
+                </li>
+              </ul>
+            ) : (
+              <ul className="navbar-nav ml-auto">
+                <li className="nav-item">
+                  <Link className="nav-link" to="/register">
+                    Register
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/login">
+                    Log In
+                  </Link>
+                </li>
+              </ul>
+            )}
           </div>
         </Toolbar>
       </AppBar>
