@@ -9,12 +9,11 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Form, UseForm } from "../UseForm";
 import { Input } from "../Controls/Input";
 import axios from "axios";
 import Notification from "../Notification/Notification";
-import DelayLink from 'react-delay-link';
 
 const initialLoginValues = {
   userName: "",
@@ -45,6 +44,7 @@ const LogIn = (props) => {
   const { notify, setNotify, userTokenKey, setIsLoggedIn, setUserLoggedIn } =
     props;
   const classes = useStyles();
+  const history = useHistory();
 
   useEffect(() => {
     setNotify({
@@ -104,7 +104,7 @@ const LogIn = (props) => {
           const user = response.data.data;
           if (checkboxElement !== null) {
             if (checkboxElement.checked) {
-              setWithExpiry(userTokenKey, user, 10000);
+              setWithExpiry(userTokenKey, user, 604800000);
               setIsLoggedIn(true);
               setUserLoggedIn(user);
             } else {
@@ -118,6 +118,10 @@ const LogIn = (props) => {
             message: "Log In Successfully",
             type: "success",
           });
+
+          setTimeout(function() {
+              history.push("/");
+          }, 2100);
         })
         .catch((error) => {
           console.log(error);
@@ -186,7 +190,7 @@ const LogIn = (props) => {
             color="secondary"
             className={classes.submit}
           >
-            <DelayLink delay={3000} to="/" replace={false}>Log In</DelayLink>
+            Log In
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>

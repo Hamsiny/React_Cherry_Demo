@@ -218,7 +218,7 @@ const OrdersTable = () => {
 
   return (
     <div className="mx-3">
-      <h3>Order List</h3>
+      <h3><strong>Orders List</strong></h3>
       {orders.length === 0 ? (
         <Backdrop className={classes.backdrop} open>
           <CircularProgress color="inherit" />

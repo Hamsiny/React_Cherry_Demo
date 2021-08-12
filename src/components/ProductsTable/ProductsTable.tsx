@@ -306,7 +306,7 @@ const ProductsTable = (props) => {
   return (
     <div>
       <div className="mx-3">
-        <h3>Product List</h3>
+        <h3><strong>Products List</strong></h3>
         {products.length === 0 ? (
           <Backdrop className={classes.backdrop} open>
             <CircularProgress color="inherit" />
