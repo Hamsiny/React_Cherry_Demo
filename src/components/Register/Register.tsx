@@ -12,6 +12,9 @@ import { Input } from "../Controls/Input";
 import { Form, UseForm } from "../UseForm";
 import axios from "axios";
 import Notification from "../Notification/Notification";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
 
 const initialRegisterValues = {
   password: "",
@@ -42,6 +45,13 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
   },
 }));
 
@@ -113,8 +123,8 @@ const Register = (props) => {
             type: "success",
           });
 
-          setTimeout(function() {
-              history.push("/login");
+          setTimeout(function () {
+            history.push("/login");
           }, 2100);
         })
         .catch((error) => {
@@ -198,26 +208,51 @@ const Register = (props) => {
                 fullWidth
               />
             </Grid>
-            <Grid item xs={12}>
-              <Input
-                label="Type Number"
+            <FormControl
+              className={classes.formControl}
+              fullWidth
+              variant="outlined"
+            >
+              <InputLabel htmlFor="user-type">User Type</InputLabel>
+              <Select
+                native
+                labelId="user-type"
+                label="User Type"
                 name="type"
-                value={values.type || ""}
+                value={values.type}
                 onChange={handleInputChange}
                 error={errors["type"]}
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Input
-                label="Discount Rate"
+              >
+                <option aria-label="None" value="" />
+                <option value={1}>1</option>
+                <option value={2}>2</option>
+                <option value={3}>3</option>
+                <option value={4}>4</option>
+              </Select>
+            </FormControl>
+            <FormControl
+              className={classes.formControl}
+              fullWidth
+              variant="outlined"
+            >
+              <InputLabel htmlFor="user-type">User Discount Rate</InputLabel>
+              <Select
+                native
+                labelId="user-discount-rate"
+                label="User Discount Rate"
                 name="discountRate"
-                value={values.discountRate || ""}
+                value={values.discountRate}
                 onChange={handleInputChange}
                 error={errors["discountRate"]}
-                fullWidth
-              />
-            </Grid>
+              >
+                <option aria-label="None" value="" />
+                <option value={1}>1.0000</option>
+                <option value={2}>2.0000</option>
+                <option value={3}>3.0000</option>
+                <option value={4}>4.0000</option>
+                <option value={5}>5.0000</option>
+              </Select>
+            </FormControl>
             <Grid item xs={12}>
               <Input
                 label="Password"
@@ -249,6 +284,6 @@ const Register = (props) => {
       </div>
     </Container>
   );
-}
+};
 
 export default Register;
