@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -14,6 +14,7 @@ import { Form, UseForm } from "../UseForm";
 import { Input } from "../Controls/Input";
 import axios from "axios";
 import Notification from "../Notification/Notification";
+import DelayLink from 'react-delay-link';
 
 const initialLoginValues = {
   userName: "",
@@ -41,14 +42,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LogIn = (props) => {
-  const {
-    notify,
-    setNotify,
-    userTokenKey,
-    setIsLoggedIn,
-    setUserLoggedIn,
-  } = props;
+  const { notify, setNotify, userTokenKey, setIsLoggedIn, setUserLoggedIn } =
+    props;
   const classes = useStyles();
+
+  useEffect(() => {
+    setNotify({
+      isOpen: true,
+      message: "You Need to Log In",
+      type: "error",
+    });
+  }, []);
 
   const checkboxElement = document.getElementById(
     "rememberCheckbox"
@@ -182,7 +186,7 @@ const LogIn = (props) => {
             color="secondary"
             className={classes.submit}
           >
-            Log In
+            <DelayLink delay={3000} to="/" replace={false}>Log In</DelayLink>
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
