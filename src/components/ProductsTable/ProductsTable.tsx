@@ -214,7 +214,7 @@ const ProductsTable = (props) => {
   });
   const [openPopup, setOpenPopup] = useState(false);
   const [productForEdit, setProductForEdit] = useState(null);
-  
+
   const [confirmDialog] = useState<any>({
     isOpen: false,
     title: "",
@@ -223,18 +223,18 @@ const ProductsTable = (props) => {
 
   const classes = useStyles();
 
-  const getProducts = () => {
+  useEffect(() => {
     const productsList: CProduct[] = [];
+    let isMounted = true;
     axios.get("http://206.189.39.185:5031/api/Product").then((response) => {
       response.data.data.forEach((product: any) => {
         productsList.push(product);
       });
-      setProducts(productsList);
+      if (isMounted) setProducts(productsList);
     });
-  };
-
-  useEffect(() => {
-    getProducts();
+    return () => {
+      isMounted = false;
+    };
   }, [products]);
 
   const handleChangePage = (event, newPage) => {
@@ -306,7 +306,9 @@ const ProductsTable = (props) => {
   return (
     <div>
       <div className="mx-3">
-        <h3><strong>Products List</strong></h3>
+        <h3>
+          <strong>Products List</strong>
+        </h3>
         {products.length === 0 ? (
           <Backdrop className={classes.backdrop} open>
             <CircularProgress color="inherit" />

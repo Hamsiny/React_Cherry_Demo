@@ -104,20 +104,20 @@ const OrdersTable = () => {
   });
   const classes = useStyles();
 
-  const getOrders = () => {
+  useEffect(() => {
     const ordersList: any[] = [];
+    let isMounted = true;
     axios
       .get("http://206.189.39.185:5031/api/Order/GetOrderList/userId/status")
       .then((response) => {
         response.data.data.forEach((order: any) => {
           ordersList.push(order);
         });
-        setOrders(ordersList);
+        if (isMounted) setOrders(ordersList);
       });
-  };
-
-  useEffect(() => {
-    getOrders();
+    return () => {
+      isMounted = false;
+    };
   }, [orders]);
 
   const handleChangePage = (event, newPage) => {
@@ -218,7 +218,9 @@ const OrdersTable = () => {
 
   return (
     <div className="mx-3">
-      <h3><strong>Orders List</strong></h3>
+      <h3>
+        <strong>Orders List</strong>
+      </h3>
       {orders.length === 0 ? (
         <Backdrop className={classes.backdrop} open>
           <CircularProgress color="inherit" />
@@ -278,34 +280,34 @@ const OrdersTable = () => {
           </form>
         </Toolbar>
         {dateFilter().length === 0 ? (
-              <h3 className="text-center mt-5">There are no results.</h3>
-            ) : (
-        <Table className={classes.table} aria-label="customized table">
-          <TableHead>
-            <TableRow>
-              {labels.map((item) => (
-                <StyledTableCell
-                  key={item.id}
-                  align={item.align ? "left" : "right"}
-                >
-                  {!item.sorting ? (
-                    item.label
-                  ) : (
-                    <TableSortLabel
-                      active={orderBy === item.id}
-                      direction={orderBy === item.id ? order : "asc"}
-                      onClick={() => {
-                        handleSortRequest(item.id);
-                      }}
-                    >
-                      {item.label}
-                    </TableSortLabel>
-                  )}
-                </StyledTableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
+          <h3 className="text-center mt-5">There are no results.</h3>
+        ) : (
+          <Table className={classes.table} aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                {labels.map((item) => (
+                  <StyledTableCell
+                    key={item.id}
+                    align={item.align ? "left" : "right"}
+                  >
+                    {!item.sorting ? (
+                      item.label
+                    ) : (
+                      <TableSortLabel
+                        active={orderBy === item.id}
+                        direction={orderBy === item.id ? order : "asc"}
+                        onClick={() => {
+                          handleSortRequest(item.id);
+                        }}
+                      >
+                        {item.label}
+                      </TableSortLabel>
+                    )}
+                  </StyledTableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
               {ordersAfterPagingAndFiltering().map((order) => (
                 <StyledTableRow key={order.orderId}>
                   <StyledTableCell component="th" scope="row">
@@ -341,8 +343,8 @@ const OrdersTable = () => {
                   </StyledTableCell>
                 </StyledTableRow>
               ))}
-          </TableBody>
-        </Table>
+            </TableBody>
+          </Table>
         )}
         <TablePagination
           component="div"
