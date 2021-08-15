@@ -14,6 +14,7 @@ import LogInPage from "./pages/LogInPage/LogInPage";
 import MUIDrawer from "./components/MUIDrawer/MUIDrawer";
 import { useEffect, useState } from "react";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 
 const theme = createTheme({
   typography: {
@@ -86,6 +87,7 @@ const App = () => {
         />
       ),
     },
+    { path: "*", exact: false, component: <NotFoundPage /> },
   ];
 
   return (
