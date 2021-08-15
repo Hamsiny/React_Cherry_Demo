@@ -23,15 +23,17 @@ const theme = createTheme({
 });
 
 const App = () => {
+  const userTokenKey = "USER_TOKEN_KEY_CHERRY";
+
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
     type: "",
   });
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem(userTokenKey) !== null
+  );
   const [userLoggedIn, setUserLoggedIn] = useState<any>(null);
-
-  const userTokenKey = "USER_TOKEN_KEY_CHERRY";
 
   const getWithExpiry = (key) => {
     const itemStr = localStorage.getItem(key);
@@ -53,7 +55,7 @@ const App = () => {
 
   useEffect(() => {
     if (getWithExpiry(userTokenKey) !== null) {
-      setIsLoggedIn(true);
+      // setIsLoggedIn(true);
       setUserLoggedIn(getWithExpiry(userTokenKey));
     }
   }, []);

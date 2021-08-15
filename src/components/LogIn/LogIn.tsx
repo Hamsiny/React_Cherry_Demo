@@ -52,7 +52,7 @@ const LogIn = (props) => {
       message: "You Need to Log In",
       type: "error",
     });
-  }, []);
+  }, [setNotify]);
 
   const checkboxElement = document.getElementById(
     "rememberCheckbox"

@@ -156,7 +156,7 @@ export const ProductForm = (props) => {
     if (productForEdit != null) {
       setValues({ ...productForEdit });
     }
-  }, [productForEdit]);
+  }, [productForEdit, setValues]);
 
   return (
     <div className="mt-2">
