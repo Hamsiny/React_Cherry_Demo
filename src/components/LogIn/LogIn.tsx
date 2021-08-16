@@ -105,12 +105,9 @@ const LogIn = (props) => {
           if (checkboxElement !== null) {
             if (checkboxElement.checked) {
               setWithExpiry(userTokenKey, user, 604800000);
-              setIsLoggedIn(true);
-              setUserLoggedIn(user);
-            } else {
-              setUserLoggedIn(user);
-              setIsLoggedIn(true);
             }
+            setIsLoggedIn(true);
+            setUserLoggedIn(user);
           }
           resetForm();
           setNotify({
@@ -119,8 +116,8 @@ const LogIn = (props) => {
             type: "success",
           });
 
-          setTimeout(function() {
-              history.push("/");
+          setTimeout(function () {
+            history.push("/");
           }, 2100);
         })
         .catch((error) => {
