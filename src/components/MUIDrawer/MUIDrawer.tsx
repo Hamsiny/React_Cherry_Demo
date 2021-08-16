@@ -116,7 +116,7 @@ const comList = [
   {
     cId: 3,
     cName: "Orders",
-    path: "/order",
+    path: "/orders",
     cIcon: <ViewListRoundedIcon color="secondary" />,
     component: <OrderPage />,
   },

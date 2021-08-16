@@ -15,6 +15,7 @@ import MUIDrawer from "./components/MUIDrawer/MUIDrawer";
 import { useEffect, useState } from "react";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
+import axios from "axios";
 
 const theme = createTheme({
   typography: {
@@ -24,6 +25,7 @@ const theme = createTheme({
 
 const App = () => {
   const userTokenKey = "USER_TOKEN_KEY_CHERRY";
+  const apiUrl = "http://206.189.39.185:5031/api";
 
   const [notify, setNotify] = useState({
     isOpen: false,
@@ -53,6 +55,16 @@ const App = () => {
     return item.value;
   };
 
+  const authAxios =
+    isLoggedIn && userLoggedIn !== null
+      ? axios.create({
+          baseURL: apiUrl,
+          headers: {
+            Authorization: `Bearer ${userLoggedIn.token}`,
+          },
+        })
+      : axios.create({ baseURL: apiUrl });
+
   useEffect(() => {
     if (getWithExpiry(userTokenKey) !== null) {
       // setIsLoggedIn(true);
@@ -61,14 +73,29 @@ const App = () => {
   }, []);
 
   const routes = [
-    { path: "/", exact: true, component: <Home /> },
+    {
+      path: "/",
+      exact: true,
+      component: <Home isLoggedIn={isLoggedIn} userLoggedIn={userLoggedIn} />,
+    },
     {
       path: "/products",
       exact: false,
       isGuard: true,
-      component: <ProductManagement notify={notify} setNotify={setNotify} />,
+      component: (
+        <ProductManagement
+          notify={notify}
+          setNotify={setNotify}
+          authAxios={authAxios}
+        />
+      ),
     },
-    { path: "/order", exact: false, isGuard: true, component: <OrderPage /> },
+    {
+      path: "/orders",
+      exact: false,
+      isGuard: true,
+      component: <OrderPage authAxios={authAxios} />,
+    },
     {
       path: "/register",
       exact: false,

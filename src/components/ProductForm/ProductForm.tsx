@@ -1,5 +1,4 @@
 import { Grid } from "@material-ui/core";
-import axios from "axios";
 import { useEffect } from "react";
 import { Button } from "../Controls/Button";
 import { Input } from "../Controls/Input";
@@ -31,7 +30,7 @@ const initialValues = {
 // const initialValues = {} as CProduct;
 
 export const ProductForm = (props) => {
-  const { setOpenPopup, productForEdit, setNotify } = props;
+  const { setOpenPopup, productForEdit, setNotify, authAxios } = props;
   const validate = (fieldValues = values) => {
     let temp = {
       ...errors,
@@ -131,14 +130,14 @@ export const ProductForm = (props) => {
       };
       if (dataToUse.productId === "") {
         console.log(dataToUse);
-        axios.post(
-          "http://206.189.39.185:5031/api/Product/ProductCreate",
+        authAxios.post(
+          `/Product/ProductCreate`,
           dataToUse
         );
       } else {
         console.log(dataToUse);
-        axios.put(
-          "http://206.189.39.185:5031/api/Product/ProductUpdate",
+        authAxios.put(
+          `/Product/ProductUpdate`,
           dataToUse
         );
       }

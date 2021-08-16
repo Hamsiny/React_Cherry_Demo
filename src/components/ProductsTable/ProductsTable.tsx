@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import CProduct from "../../models/CProduct";
 import {
   withStyles,
@@ -116,7 +115,7 @@ const labels = [
 ];
 
 function Row(props) {
-  const { product, openInPopup, setNotify } = props;
+  const { product, openInPopup, setNotify, authAxios } = props;
   const [open, setOpen] = useState(false);
   const [confirmDialog, setConfirmDialog] = useState({
     isOpen: false,
@@ -127,7 +126,7 @@ function Row(props) {
 
   const onDelete = (id) => {
     setConfirmDialog({ ...confirmDialog, isOpen: false });
-    axios.delete(`http://206.189.39.185:5031/api/Product/${id}`);
+    authAxios.delete(`/Product/${id}`);
     setNotify({
       isOpen: true,
       message: "Deleted Successfully",
@@ -200,7 +199,7 @@ function Row(props) {
 }
 
 const ProductsTable = (props) => {
-  const { notify, setNotify } = props;
+  const { notify, setNotify, authAxios } = props;
   const [products, setProducts] = useState<CProduct[]>([]);
   const pages = [10, 20, 30];
   const [page, setPage] = useState(0);
@@ -226,7 +225,7 @@ const ProductsTable = (props) => {
   useEffect(() => {
     const productsList: CProduct[] = [];
     let isMounted = true;
-    axios.get("http://206.189.39.185:5031/api/Product").then((response) => {
+    authAxios.get(`/Product`).then((response) => {
       response.data.data.forEach((product: any) => {
         productsList.push(product);
       });
@@ -235,7 +234,7 @@ const ProductsTable = (props) => {
     return () => {
       isMounted = false;
     };
-  }, [products]);
+  }, [products, authAxios]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -380,6 +379,7 @@ const ProductsTable = (props) => {
                     openInPopup={openInPopup}
                     setNotify={setNotify}
                     confirmDialog={confirmDialog}
+                    authAxios={authAxios}
                   />
                 ))}
               </TableBody>
@@ -404,6 +404,7 @@ const ProductsTable = (props) => {
             setOpenPopup={setOpenPopup}
             productForEdit={productForEdit}
             setNotify={setNotify}
+            authAxios={authAxios}
           />
         </Popup>
         <Notification notify={notify} setNotify={setNotify} />

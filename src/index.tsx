@@ -6,12 +6,28 @@ import reportWebVitals from "./reportWebVitals";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "jquery/dist/jquery.min.js";
 import "font-awesome/css/font-awesome.min.css";
+// import axios from "axios";
 
-ReactDOM.render(
-  <App />,
 
-  document.getElementById("root")
-);
+// axios.interceptors.request.use(
+//   (request) => {
+//     if (request.url?.includes("products") || request.url?.includes("orders")) {
+//       request.headers["Authorization"] = getWithExpiry("USER_TOKEN_KEY_CHERRY").token;
+//     }
+//     console.log(request);
+//     return request;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   }
+// );
+
+// axios.interceptors.response.use(response => {
+//   console.log(response);
+//   return response;
+// });
+
+ReactDOM.render(<App />, document.getElementById("root"));
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

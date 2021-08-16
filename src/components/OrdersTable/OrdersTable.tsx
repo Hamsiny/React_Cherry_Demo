@@ -20,7 +20,6 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import axios from "axios";
 import { TablePagination } from "@material-ui/core";
 import { Button } from "../Controls/Button";
 import RotateLeftIcon from "@material-ui/icons/RotateLeft";
@@ -90,7 +89,8 @@ const labels = [
   { id: "status", label: "Status", align: false },
 ];
 
-const OrdersTable = () => {
+const OrdersTable = (props) => {
+  const { authAxios } = props;
   const [orders, setOrders] = useState<any>([]);
   const pages = [10, 20, 30];
   const [page, setPage] = useState(0);
@@ -107,8 +107,8 @@ const OrdersTable = () => {
   useEffect(() => {
     const ordersList: any[] = [];
     let isMounted = true;
-    axios
-      .get("http://206.189.39.185:5031/api/Order/GetOrderList/userId/status")
+    authAxios
+      .get(`/Order/GetOrderList/userId/status`)
       .then((response) => {
         response.data.data.forEach((order: any) => {
           ordersList.push(order);
@@ -118,7 +118,7 @@ const OrdersTable = () => {
     return () => {
       isMounted = false;
     };
-  }, [orders]);
+  }, [orders, authAxios]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
