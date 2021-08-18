@@ -1,5 +1,6 @@
 import { Grid } from "@material-ui/core";
-import { useEffect } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Button } from "../Controls/Button";
 import { Input } from "../Controls/Input";
 import { Form, UseForm } from "../UseForm";
@@ -31,6 +32,7 @@ const initialValues = {
 
 export const ProductForm = (props) => {
   const { setOpenPopup, productForEdit, setNotify, authAxios } = props;
+  const [fileImage, setFileImage] = useState<any>();
   const validate = (fieldValues = values) => {
     let temp = {
       ...errors,
@@ -105,11 +107,37 @@ export const ProductForm = (props) => {
   const { values, setValues, errors, setErrors, handleInputChange, resetForm } =
     UseForm(initialValues, true, validate);
 
+  const handleUploadChange = (e) => {
+    setFileImage(e.target.files[0]);
+  };
+
+  const handleImageUpload = (e) => {
+    e.preventDefault();
+    const file = fileImage;
+    let formdata = new FormData();
+    formdata.append("imageFile", file);
+
+    axios({
+      url: "http://206.189.39.185:5031/api/Common/UploadImage",
+      method: "POST",
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      data: formdata,
+    }).then((res) => {
+      setValues({ ...values, imageUrl: res.data });
+      setNotify({
+        isOpen: true,
+        message: "Image Uploaded Successfully",
+        type: "success",
+      });
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(values);
     if (validate()) {
-      // addOrEdit(values, resetForm);
       const dataToUse = {
         productId: values.productId,
         productName: values.productName,
@@ -130,16 +158,10 @@ export const ProductForm = (props) => {
       };
       if (dataToUse.productId === "") {
         console.log(dataToUse);
-        authAxios.post(
-          `/Product/ProductCreate`,
-          dataToUse
-        );
+        authAxios.post(`/Product/ProductCreate`, dataToUse);
       } else {
         console.log(dataToUse);
-        authAxios.put(
-          `/Product/ProductUpdate`,
-          dataToUse
-        );
+        authAxios.put(`/Product/ProductUpdate`, dataToUse);
       }
       resetForm();
       setOpenPopup(false);
@@ -162,7 +184,7 @@ export const ProductForm = (props) => {
       {/* <h2>Product Form</h2> */}
       <Form onSubmit={handleSubmit}>
         <Grid container>
-          <Grid item xs={4}>
+          <Grid item xs={6}>
             <Input
               label="Product Name"
               name="productName"
@@ -178,21 +200,43 @@ export const ProductForm = (props) => {
               // error={errors["productCode"]}
             />
             <Input
-              label="Image Url"
-              name="imageUrl"
-              value={values.imageUrl || ""}
-              onChange={handleInputChange}
-              // error={errors["imageUrl"]}
-            />
-            <Input
               label="Description"
               name="desciption"
               value={values.desciption || ""}
               onChange={handleInputChange}
               // error={errors["desciption"]}
             />
+            <Input
+              label="Image Url"
+              name="imageUrl"
+              value={values.imageUrl || ""}
+              onChange={handleInputChange}
+              // error={errors["imageUrl"]}
+            />
+            <div>
+              <Input
+                id="outlined-full-width"
+                label="Image Upload"
+                style={{ margin: 8 }}
+                name="imageUrl"
+                type="file"
+                fullWidth
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
+                onChange={handleUploadChange}
+              />
+              <Button
+                text="Upload"
+                color="secondary"
+                // type="submit"
+                onClick={handleImageUpload}
+              />
+            </div>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <Input
               label="Price"
               name="price"
@@ -201,7 +245,7 @@ export const ProductForm = (props) => {
               error={errors["price"]}
             />
             <Input
-              label="Recommended Retail Price"
+              label="R Retail Price"
               name="priceRrp"
               value={values.priceRrp || ""}
               onChange={handleInputChange}
@@ -236,7 +280,7 @@ export const ProductForm = (props) => {
               error={errors["priceSpecial"]}
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <Input
               label="Height(cm)"
               name="height"
