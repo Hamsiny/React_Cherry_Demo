@@ -1,5 +1,4 @@
 import { Grid } from "@material-ui/core";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Button } from "../Controls/Button";
 import { Input } from "../Controls/Input";
@@ -117,14 +116,7 @@ export const ProductForm = (props) => {
     let formdata = new FormData();
     formdata.append("imageFile", file);
 
-    axios({
-      url: "http://206.189.39.185:5031/api/Common/UploadImage",
-      method: "POST",
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      data: formdata,
-    }).then((res) => {
+    authAxios.post(`/Common/UploadImage`, formdata).then((res) => {
       setValues({ ...values, imageUrl: res.data });
       setNotify({
         isOpen: true,

@@ -40,3 +40,19 @@
 .widthmargin {
   margin-left: 4.5rem;
 }
+
+.order-table table {
+  width: 100%;
+}
+.order-table table,
+.order-table th,
+.order-table td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+.order-table th,
+.order-table td {
+  padding: 15px;
+  text-align: center;
+}

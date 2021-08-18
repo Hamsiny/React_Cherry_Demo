@@ -186,7 +186,43 @@ function Row(props) {
           colSpan={8}
         >
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box margin={1}>{product.productName}</Box>
+            <Box margin={1}>
+              <div className="order-table">
+                <table>
+                  <tbody>
+                    <tr>
+                      <th colSpan={6}>Product Details</th>
+                    </tr>
+                    <tr>
+                      <th rowSpan={5}>Product Image</th>
+                      <td rowSpan={5}>
+                        <img
+                          src={product.imageUrl}
+                          alt="product item"
+                          width="200px"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Product ID</th>
+                      <td>{product.productId}</td>
+                    </tr>
+                    <tr>
+                      <th>Product Name</th>
+                      <td>{product.productName}</td>
+                    </tr>
+                    <tr>
+                      <th>Product Code</th>
+                      <td>{product.productCode}</td>
+                    </tr>
+                    <tr>
+                      <th>Product Description</th>
+                      <td>{product.desciption}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </Box>
           </Collapse>
         </StyledTableCell>
       </StyledTableRow>
