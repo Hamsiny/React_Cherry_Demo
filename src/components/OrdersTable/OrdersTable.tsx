@@ -25,6 +25,8 @@ import { Button } from "../Controls/Button";
 import RotateLeftIcon from "@material-ui/icons/RotateLeft";
 import { Input } from "../Controls/Input";
 import { Search } from "@material-ui/icons";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import { CSVLink } from "react-csv";
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -89,6 +91,63 @@ const labels = [
   { id: "status", label: "Status", align: false },
 ];
 
+const headers = [
+  { label: "Order Id", key: "orderId" },
+  { label: "User Id", key: "userId" },
+  { label: "Batch Id", key: "batchId" },
+  { label: "User Name", key: "userName" },
+  { label: "User Type", key: "userType" },
+  { label: "User Discount Rate", key: "userDiscountRate" },
+  { label: "User Email", key: "userEmail" },
+  { label: "User Mobile Number", key: "userMobileNumber" },
+  { label: "User First Name", key: "userFirstName" },
+  { label: "User Last Name", key: "userLastName" },
+  { label: "User Company Name", key: "userCompanyName" },
+  { label: "Product Id", key: "productId" },
+  { label: "Product Name", key: "productName" },
+  { label: "Product Code", key: "productCode" },
+  { label: "Product Dimension", key: "productDimension" },
+  { label: "Weight", key: "weight" },
+  { label: "Width", key: "width" },
+  { label: "Height", key: "height" },
+  { label: "Length", key: "length" },
+  { label: "Package Quantity", key: "packageQty" },
+  { label: "Recommanded Retailer Price", key: "priceRrp" },
+  { label: "Shopify Price", key: "priceShopify" },
+  { label: "Agent Price", key: "priceAgent" },
+  { label: "12.12 Price", key: "price1212" },
+  { label: "Special Price", key: "priceSpecial" },
+  { label: "Quantity", key: "qty" },
+  { label: "Price", key: "price" },
+  { label: "Unit Price", key: "unitPrice" },
+  { label: "Recipient", key: "recipient" },
+  { label: "Recipient Country", key: "recipientCountry" },
+  { label: "Recipient Province", key: "recipientProvience" },
+  { label: "Recipient City", key: "recipientCity" },
+  { label: "Recipient Address", key: "recipientAddr" },
+  { label: "Recipient Number", key: "recipientNumber" },
+  { label: "Sender Country", key: "senderCountry" },
+  { label: "Sender City", key: "senderCity" },
+  { label: "Sender Address", key: "senderAddr" },
+  { label: "Sender Name", key: "senderName" },
+  { label: "Sender Number", key: "senderNumber" },
+  { label: "Track Number", key: "trackNo" },
+  { label: "Status", key: "status" },
+  { label: "Estimated Dispatch Time", key: "estimatedDispatchTime" },
+  { label: "Canceled Date", key: "canceledDate" },
+  { label: "Cin7 Id", key: "cin7Id" },
+  { label: "China Order Reference", key: "chinaOrderReference" },
+  { label: "Po Number", key: "poNumber" },
+  { label: "Branch", key: "branch" },
+  { label: "Created At", key: "createdAt" },
+  { label: "Submited At", key: "submitedAt" },
+  { label: "Submited Date", key: "submitedDate" },
+  { label: "Billing Company", key: "billingCompany" },
+  { label: "Customer Reference Number", key: "customerReferenceNo" },
+  { label: "Sender Company Name", key: "senderCompanyName" },
+  { label: "Payment Method", key: "paymentMethod" },
+];
+
 const OrdersTable = (props) => {
   const { authAxios } = props;
   const [orders, setOrders] = useState<any>([]);
@@ -107,18 +166,22 @@ const OrdersTable = (props) => {
   useEffect(() => {
     const ordersList: any[] = [];
     let isMounted = true;
-    authAxios
-      .get(`/Order/GetOrderList/userId/status`)
-      .then((response) => {
-        response.data.data.forEach((order: any) => {
-          ordersList.push(order);
-        });
-        if (isMounted) setOrders(ordersList);
+    authAxios.get(`/Order/GetOrderList/userId/status`).then((response) => {
+      response.data.data.forEach((order: any) => {
+        ordersList.push(order);
       });
+      if (isMounted) setOrders(ordersList);
+    });
     return () => {
       isMounted = false;
     };
   }, [orders, authAxios]);
+
+  const csvReport = {
+    filename: "Orders.csv",
+    headers: headers,
+    data: orders,
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -263,13 +326,6 @@ const OrdersTable = (props) => {
                 shrink: true,
               }}
             />
-            {/* <Button
-              text="Search"
-              variant="outlined"
-              color="secondary"
-              startIcon={<SearchIcon />}
-              onClick={dateFilter}
-            /> */}
             <Button
               text="Reset"
               variant="outlined"
@@ -277,6 +333,15 @@ const OrdersTable = (props) => {
               startIcon={<RotateLeftIcon />}
               onClick={resetDate}
             />
+            <CSVLink {...csvReport}>
+              <Button
+                text="Export To CSV"
+                variant="outlined"
+                color="primary" 
+                style={{height: "48px"}}
+                startIcon={<ExitToAppIcon />}
+              />
+            </CSVLink>
           </form>
         </Toolbar>
         {dateFilter().length === 0 ? (

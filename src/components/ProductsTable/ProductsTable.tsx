@@ -37,6 +37,8 @@ import Notification from "../Notification/Notification";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import { CSVLink } from "react-csv";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -51,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
       fontWeight: "300",
     },
     "& tbody tr:hover": {
-      backgroundColor: "#FFF3F1",
+      // backgroundColor: "#FFF3F1",
       cursor: "pointer",
     },
   },
@@ -64,6 +66,11 @@ const useStyles = makeStyles((theme) => ({
   },
   newButton: {
     position: "absolute",
+    right: "200px",
+  },
+  exportButton: {
+    position: "absolute",
+    top: "7px",
     right: "10px",
   },
   root: {
@@ -112,6 +119,29 @@ const labels = [
   { id: "size", label: "Size (H * W * L)", align: false },
   { id: "packageQty", label: "Quantity", align: false },
   { id: "actions", label: "Actions", align: false, disableSorting: true },
+];
+
+const headers = [
+  { label: "Product Id", key: "productId" },
+  { label: "Product Code", key: "productCode" },
+  { label: "Product Name", key: "productName" },
+  { label: "Price", key: "price" },
+  { label: "Height", key: "height" },
+  { label: "Width", key: "width" },
+  { label: "Length", key: "length" },
+  { label: "Description", key: "desciption" },
+  { label: "Create At", key: "createdAt" },
+  { label: "Update At", key: "updatedAt" },
+  { label: "Weight", key: "weight" },
+  { label: "Package Quantity", key: "packageQty" },
+  { label: "Is Active", key: "isActive" },
+  { label: "Recommanded Retailer Price", key: "priceRrp" },
+  { label: "Shopify Price", key: "priceShopify" },
+  { label: "Agent Price", key: "priceAgent" },
+  { label: "12.12 Price", key: "price1212" },
+  { label: "Special Price", key: "priceSpecial" },
+  { label: "Image Url", key: "imageUrl" },
+  { label: "TOrder", key: "tOrder" },
 ];
 
 function Row(props) {
@@ -272,6 +302,12 @@ const ProductsTable = (props) => {
     };
   }, [products, authAxios]);
 
+  const csvReport = {
+    filename: "Products.csv",
+    headers: headers,
+    data: products,
+  };
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -376,6 +412,15 @@ const ProductsTable = (props) => {
                 setProductForEdit(null);
               }}
             />
+            <CSVLink {...csvReport}>
+              <Button
+                text="Export To CSV"
+                variant="outlined"
+                color="primary"
+                startIcon={<ExitToAppIcon />}
+                className={classes.exportButton}
+              />
+            </CSVLink>
           </Toolbar>
           {products.length === 0 ? (
             <h3 className="mt-5 text-center">There are no results.</h3>
