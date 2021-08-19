@@ -16,22 +16,22 @@ Both products and order page can export data into csv file.
 ### Material UI
 
 ```npm install @material-ui/core```
-[https://material-ui.com/getting-started/installation/](Material UI Get Started)
+[https://material-ui.com/getting-started/installation/] (Material UI Get Started)
 
 ### Axios
 
 ```npm install axios```
-[https://axios-http.com/docs/intro](Axios Get Started)
+[https://axios-http.com/docs/intro] (Axios Get Started)
 
 ### React Router Dom
 
 ```npm install react-router-dom```
-[https://reactrouter.com/web/guides/quick-start](React Router Dom Get Started)
+[https://reactrouter.com/web/guides/quick-start] (React Router Dom Get Started)
 
 ### React Csv
 
 ```npm i react-csv```
-[https://www.npmjs.com/package/react-csv](React Csv installed)
+[https://www.npmjs.com/package/react-csv] (React Csv installed)
 
 ## Project screenshot
 
