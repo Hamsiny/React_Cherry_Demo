@@ -11,6 +11,7 @@ In orders page, same as products page, we get all orders data from API and show 
 
 Both products and order page can export data into csv file.
 
+
 ## Dependencies Used
 
 ### Material UI
@@ -39,6 +40,35 @@ Both products and order page can export data into csv file.
 
 ## Project screenshot
 
+
 ### Home Page
 
 <img src="https://github.com/Hamsiny/React_Cherry_Demo/blob/master/images/homePage.png?raw=true" />
+
+### Login Page
+
+<img src="https://github.com/Hamsiny/React_Cherry_Demo/blob/master/images/loginPage.png?raw=true" />
+
+### Register Page
+
+<img src="https://github.com/Hamsiny/React_Cherry_Demo/blob/master/images/registerPage.png?raw=true" />
+
+### Products Page
+
+<img src="https://github.com/Hamsiny/React_Cherry_Demo/blob/master/images/productsPage.png?raw=true" />
+
+### Add Product
+
+<img src="https://github.com/Hamsiny/React_Cherry_Demo/blob/master/images/productsAdd.png?raw=true" />
+
+### Edit Product
+
+<img src="https://github.com/Hamsiny/React_Cherry_Demo/blob/master/images/productsEdit.png?raw=true" />
+
+### Delete Product
+
+<img src="https://github.com/Hamsiny/React_Cherry_Demo/blob/master/images/productsDelete.png?raw=true" />
+
+### Products Searching
+
+<img src="">
