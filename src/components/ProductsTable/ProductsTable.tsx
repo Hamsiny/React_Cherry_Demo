@@ -477,7 +477,7 @@ const ProductsTable = (props) => {
           />
         </TableContainer>
         <Popup
-          title="Add a Product"
+          title={productForEdit !== null ? "Edit Product" : "Add a Product"}
           openPopup={openPopup}
           setOpenPopup={setOpenPopup}
         >
