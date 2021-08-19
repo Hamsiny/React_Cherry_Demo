@@ -309,7 +309,7 @@ export const ProductForm = (props) => {
               error={errors["packageQty"]}
             />
           </Grid>
-          <div>
+          <div className="mt-3">
             <Button type="submit" color="secondary" text="Submit" />
             <Button text="Reset" color="default" onClick={resetForm} />
           </div>
