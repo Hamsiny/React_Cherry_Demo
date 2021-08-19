@@ -1,46 +1,40 @@
-# Getting Started with Create React App
+# React Cherry Demo
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a Web project made by React and Material UI. 
+In this Project, we have an user system, products and orders page, and getting data form API.
 
-## Available Scripts
+In user system, we have a register and a login page, which can register new user and login by user. If we don't login as a user, we can only access home page, otherwise we can enter products and orders page to check products and orders data from API.
 
-In the project directory, you can run:
+In products page, we get all products data from API and show them in Material UI collapsed table with pagination, sorting and searching, each products can be edited and deleted, we can also add new products and upload image into products.
 
-### `npm start`
+In orders page, same as products page, we get all orders data from API and show in table. Orders row can be filtered by date.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Both products and order page can export data into csv file.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Dependencies Used
 
-### `npm test`
+### Material UI
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```npm install @material-ui/core```
+[https://material-ui.com/getting-started/installation/](Material UI Get Started)
 
-### `npm run build`
+### Axios
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```npm install axios```
+[https://axios-http.com/docs/intro](Axios Get Started)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### React Router Dom
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```npm install react-router-dom```
+[https://reactrouter.com/web/guides/quick-start](React Router Dom Get Started)
 
-### `npm run eject`
+### React Csv
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```npm i react-csv```
+[https://www.npmjs.com/package/react-csv](React Csv installed)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Project screenshot
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Home Page
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+<img src="https://github.com/Hamsiny/React_Cherry_Demo/blob/master/images/homePage.png?raw=true" />
